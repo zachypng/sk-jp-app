@@ -1,0 +1,294 @@
+<script lang="ts">
+	import { Button } from '$lib/components/ui/button';
+	import {
+		ArrowLeftToLine,
+		Image,
+		Info,
+		Text,
+		Shovel,
+		Hash,
+		Download,
+		Ban,
+		SquareMousePointer,
+		Search
+	} from 'lucide-svelte';
+	import { orgchartConfig } from '$lib/utils';
+	import * as Tooltip from '$lib/components/ui/tooltip';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { mode } from 'mode-watcher';
+</script>
+
+<!-- <aside
+	class="relative mx-auto mr-auto h-[calc(100vh-4rem)] max-w-xs items-center justify-center border-l bg-muted/50 dark:bg-muted/20"
+> -->
+<div class="flex w-full flex-col space-y-2 p-4">
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<Button
+				variant="ghost"
+				class="max-w-16 h-full w-full items-center"
+				on:click={() => {
+					$orgchartConfig.showInfo = !$orgchartConfig.showInfo;
+				}}
+			>
+				<div
+					class="flex w-full flex-col items-center justify-center {$orgchartConfig.showInfo
+						? 'text-sky-500'
+						: 'text-muted-foreground'}"
+				>
+					<Info class="h-5 w-5" />
+					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+						Info
+					</p>
+				</div>
+			</Button>
+		</Tooltip.Trigger>
+		<Tooltip.Content side="left">
+			<p class="text-sm">Toggle the info popout that includes hires & departures</p>
+		</Tooltip.Content>
+	</Tooltip.Root>
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<Button
+				variant="ghost"
+				class="max-w-16 h-full w-full items-center"
+				on:click={() => {
+					$orgchartConfig.searchOpen = !$orgchartConfig.searchOpen;
+				}}
+			>
+				<div
+					class="flex w-full flex-col items-center justify-center {$orgchartConfig.searchOpen
+						? 'text-sky-500'
+						: 'text-muted-foreground'}"
+				>
+					<Search class="h-5 w-5" />
+					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+						Search
+					</p>
+					<kbd class="text-xxs mt-2 rounded bg-muted px-1">Ctrl + K</kbd>
+				</div>
+			</Button>
+		</Tooltip.Trigger>
+		<Tooltip.Content side="left">
+			<p class="text-sm">Search for nodes in the chart</p>
+		</Tooltip.Content>
+	</Tooltip.Root>
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<Button
+				variant="ghost"
+				class="max-w-16 h-full w-full items-center"
+				on:click={() => {
+					$orgchartConfig.showPhotos = !$orgchartConfig.showPhotos;
+				}}
+			>
+				<div
+					class="flex w-full flex-col items-center justify-center {$orgchartConfig.showPhotos
+						? 'text-sky-500'
+						: 'text-muted-foreground'}"
+				>
+					<Image class="h-5 w-5" />
+					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+						Photos
+					</p>
+				</div>
+			</Button>
+		</Tooltip.Trigger>
+		<Tooltip.Content side="left">
+			<p class="text-sm">Toggle the display of photos within chart nodes</p>
+		</Tooltip.Content>
+	</Tooltip.Root>
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<Button
+				variant="ghost"
+				class="max-w-16 h-full w-full items-center"
+				on:click={() => {
+					$orgchartConfig.showBios = !$orgchartConfig.showBios;
+				}}
+			>
+				<div
+					class="flex w-full flex-col items-center justify-center {$orgchartConfig.showBios
+						? 'text-sky-500'
+						: 'text-muted-foreground'}"
+				>
+					<Text class="h-5 w-5" />
+					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+						Bios
+					</p>
+				</div>
+			</Button>
+		</Tooltip.Trigger>
+		<Tooltip.Content side="left">
+			<p class="text-sm">
+				{$orgchartConfig.showBios ? 'Disable' : 'Enable'} the display of bios when hovering over chart
+				nodes
+			</p>
+		</Tooltip.Content>
+	</Tooltip.Root>
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger asChild let:builder>
+					<Button variant="ghost" class="max-w-16 h-full w-full items-center" builders={[builder]}>
+						<div class="flex w-full flex-col items-center justify-center text-muted-foreground">
+							<SquareMousePointer class="h-5 w-5" />
+							<p
+								class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs"
+							>
+								Detail
+							</p>
+						</div>
+					</Button>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content class="w-56" side="left">
+					<DropdownMenu.Label>Detail to display on nodes</DropdownMenu.Label>
+					<DropdownMenu.Separator />
+					<DropdownMenu.RadioGroup bind:value={$orgchartConfig.detail}>
+						<DropdownMenu.RadioItem
+							value="department"
+							class={$orgchartConfig.detail === 'department'
+								? 'text-sky-500'
+								: 'text-muted-foreground'}>Department</DropdownMenu.RadioItem
+						>
+						<DropdownMenu.RadioItem
+							value="location"
+							class={$orgchartConfig.detail === 'location'
+								? 'text-sky-500'
+								: 'text-muted-foreground'}>Location</DropdownMenu.RadioItem
+						>
+						<DropdownMenu.RadioItem
+							value="gender"
+							class={$orgchartConfig.detail === 'gender' ? 'text-sky-500' : 'text-muted-foreground'}
+							>Gender</DropdownMenu.RadioItem
+						>
+					</DropdownMenu.RadioGroup>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
+		</Tooltip.Trigger>
+		<Tooltip.Content side="left">
+			<p class="text-sm">Select which detail is shown at the bottom of each node</p>
+		</Tooltip.Content>
+	</Tooltip.Root>
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<Button
+				variant="ghost"
+				class="max-w-16 h-full w-full items-center"
+				on:click={() => {
+					$orgchartConfig.allowEdits = !$orgchartConfig.allowEdits;
+				}}
+			>
+				<div
+					class="flex w-full flex-col items-center justify-center {$orgchartConfig.allowEdits
+						? 'text-sky-500'
+						: 'text-muted-foreground'}"
+				>
+					<Shovel class="h-5 w-5" />
+					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+						Edit Mode
+					</p>
+				</div>
+			</Button>
+		</Tooltip.Trigger>
+		<Tooltip.Content side="left">
+			<p class="text-sm">
+				{$orgchartConfig.allowEdits ? 'Disable' : 'Enable'} the ability to edit the position of nodes
+				in the chart
+			</p>
+		</Tooltip.Content>
+	</Tooltip.Root>
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<Button
+				variant="ghost"
+				class="max-w-16 h-full w-full items-center"
+				on:click={() => {
+					$orgchartConfig.showNodeCount = !$orgchartConfig.showNodeCount;
+				}}
+			>
+				<div
+					class="flex w-full flex-col items-center justify-center {$orgchartConfig.showNodeCount
+						? 'text-sky-500'
+						: 'text-muted-foreground'}"
+				>
+					<Hash class="h-5 w-5" />
+					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+						Node Count
+					</p>
+				</div>
+			</Button>
+		</Tooltip.Trigger>
+		<Tooltip.Content side="left">
+			<p class="text-sm">
+				{$orgchartConfig.showNodeCount ? 'Disable' : 'Enable'} displaying the number of nodes in the
+				bottom left of the chart
+			</p>
+		</Tooltip.Content>
+	</Tooltip.Root>
+
+	{#if $mode === 'light'}
+		<Tooltip.Root>
+			<Tooltip.Trigger>
+				<Button
+					variant="ghost"
+					class="max-w-16 h-full w-full items-center"
+					on:click={() => {
+						$orgchartConfig.downloadOpen = !$orgchartConfig.downloadOpen;
+					}}
+				>
+					<div
+						class="flex w-full flex-col items-center justify-center {$orgchartConfig.downloadOpen
+							? 'text-sky-500'
+							: 'text-muted-foreground'}"
+					>
+						<Download class="h-5 w-5" />
+						<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+							Download
+						</p>
+					</div>
+				</Button>
+			</Tooltip.Trigger>
+			<Tooltip.Content side="left">
+				<p class="text-sm">Download an SVG copy of the orgchart.</p>
+			</Tooltip.Content>
+		</Tooltip.Root>
+	{:else}
+		<Button variant="ghost" disabled class="max-w-16 h-full w-full items-center">
+			<div
+				class="flex w-full flex-col items-center justify-center {$orgchartConfig.downloadOpen
+					? 'text-sky-500'
+					: 'text-muted-foreground'}"
+			>
+				<Ban class="h-5 w-5" />
+				<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+					Download
+				</p>
+			</div>
+		</Button>
+	{/if}
+</div>
+<div class="absolute bottom-0 flex w-full flex-col justify-end space-y-4 p-4">
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<Button
+				variant="ghost"
+				class="max-w-16 h-full w-full items-center justify-end place-self-end"
+				href="/orgchart"
+			>
+				<div class="flex w-full flex-col items-center justify-center text-muted-foreground">
+					<ArrowLeftToLine class="h-5 w-5" />
+					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+						Back
+					</p>
+				</div>
+			</Button>
+		</Tooltip.Trigger>
+		<Tooltip.Content side="left">
+			<p class="text-sm">
+				Return to the {$orgchartConfig.lastTab} selection page
+			</p>
+		</Tooltip.Content>
+	</Tooltip.Root>
+</div>
+<!-- </aside> -->
