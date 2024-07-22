@@ -25,7 +25,7 @@
 	let diagramDiv: HTMLDivElement;
 	let form: HTMLFormElement;
 	let value = '';
-	let open = false;
+	let open = true;
 
 	$: searchString = positions.find((f) => f.name === value)?.name ?? 'Search nodes...';
 	// $: searchString = '';
