@@ -6,7 +6,7 @@ import {
 	AIRTABLE_CLIENT_ID,
 	AIRTABLE_CLIENT_SECRET,
 	BASE_URL,
-	VERCEL_URL
+	VERCEL_PROJECT_PRODUCTION_URL
 } from '$env/static/private';
 import { Lucia } from 'lucia';
 import { dev } from '$app/environment';
@@ -17,7 +17,7 @@ export const airtable = new Airtable(
 	AIRTABLE_CLIENT_ID,
 	AIRTABLE_CLIENT_SECRET,
 	!dev
-		? 'https://' + VERCEL_URL + '/login/airtable/callback'
+		? 'https://' + VERCEL_PROJECT_PRODUCTION_URL + '/login/airtable/callback'
 		: BASE_URL + '/login/airtable/callback'
 );
 
