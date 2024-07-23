@@ -1,0 +1,181 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index f704956864449516be2de7d428dc831aababaeba..2f0eaca4361c603cc3630c9f8d83d1eba49fa942 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -1,3 +1,4 @@
++export { Airtable } from "./providers/airtable.js";
+ export { AmazonCognito } from "./providers/amazon-cognito.js";
+ export { AniList } from "./providers/anilist.js";
+ export { Apple } from "./providers/apple.js";
+@@ -40,6 +41,7 @@ export { WorkOS } from "./providers/workos.js";
+ export { Yahoo } from "./providers/yahoo.js";
+ export { Yandex } from "./providers/yandex.js";
+ export { Zoom } from "./providers/zoom.js";
++export type { AirtableTokens } from "./providers/airtable.js";
+ export type { AmazonCognitoRefreshedTokens, AmazonCognitoTokens } from "./providers/amazon-cognito.js";
+ export type { AniListTokens } from "./providers/anilist.js";
+ export type { AppleCredentials, AppleRefreshedTokens, AppleTokens } from "./providers/apple.js";
+diff --git a/dist/index.js b/dist/index.js
+index 1ffae0976f17893eddbc1fdde4ea95e287d94e1c..041638169b0e168ac8123e52af7049c72106f2f8 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1,3 +1,4 @@
++export { Airtable } from "./providers/airtable.js";
+ export { AmazonCognito } from "./providers/amazon-cognito.js";
+ export { AniList } from "./providers/anilist.js";
+ export { Apple } from "./providers/apple.js";
+diff --git a/dist/providers/airtable.d.ts b/dist/providers/airtable.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..b00372a3a55340a92d198230a261ef7180027bdd
+--- /dev/null
++++ b/dist/providers/airtable.d.ts
+@@ -0,0 +1,20 @@
++import type { OAuth2ProviderWithPKCE } from "../index.js";
++export declare class Airtable implements OAuth2ProviderWithPKCE {
++    private client;
++    private clientSecret;
++    constructor(clientId: string, clientSecret: string, redirectURI: string);
++    createAuthorizationURL(state: string, codeVerifier: string, options?: {
++        scopes?: string[];
++    }): Promise<URL>;
++    validateAuthorizationCode(code: string, codeVerifier: string): Promise<AirtableTokens>;
++    refreshAccessToken(refreshToken: string): Promise<AirtableTokens>;
++}
++export interface AirtableTokens {
++    accessToken: string;
++    refreshToken?: string;
++    accessTokenExpiresAt: Date;
++}
++export interface AirtableRefreshedTokens {
++    accessToken: string;
++    accessTokenExpiresAt: Date;
++}
+diff --git a/dist/providers/airtable.js b/dist/providers/airtable.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..e3036db15272bd9407fe6e33edee265cf79ed71b
+--- /dev/null
++++ b/dist/providers/airtable.js
+@@ -0,0 +1,46 @@
++import { OAuth2Client } from "oslo/oauth2";
++import { TimeSpan, createDate } from "oslo";
++const authorizeEndpoint = "https://airtable.com/oauth2/v1/authorize";
++const tokenEndpoint = "https://airtable.com/oauth2/v1/token";
++export class Airtable {
++    client;
++    clientSecret;
++    constructor(clientId, clientSecret, redirectURI) {
++        this.client = new OAuth2Client(clientId, authorizeEndpoint, tokenEndpoint, {
++            redirectURI
++        });
++        this.clientSecret = clientSecret;
++    }
++    async createAuthorizationURL(state, codeVerifier, options) {
++        const scopes = options?.scopes ?? [];
++        return await this.client.createAuthorizationURL({
++            state,
++            codeVerifier,
++            scopes: [...scopes, "user.email:read"]
++        });
++    }
++    async validateAuthorizationCode(code, codeVerifier) {
++        const result = await this.client.validateAuthorizationCode(code, {
++            authenticateWith: "http_basic_auth",
++            credentials: this.clientSecret,
++            codeVerifier
++        });
++        const tokens = {
++            accessToken: result.access_token,
++            refreshToken: result.refresh_token,
++            accessTokenExpiresAt: createDate(new TimeSpan(result.expires_in, "s"))
++        };
++        return tokens;
++    }
++    async refreshAccessToken(refreshToken) {
++        const result = await this.client.refreshAccessToken(refreshToken, {
++            authenticateWith: "http_basic_auth",
++            credentials: this.clientSecret
++        });
++        const tokens = {
++            accessToken: result.access_token,
++            accessTokenExpiresAt: createDate(new TimeSpan(result.expires_in, "s"))
++        };
++        return tokens;
++    }
++}
+diff --git a/dist/providers/intuit.d.ts b/dist/providers/intuit.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..d9f131297aaacf839b28de880c5d0e38bbe870a9
+--- /dev/null
++++ b/dist/providers/intuit.d.ts
+@@ -0,0 +1,18 @@
++import type { OAuth2Provider } from "../index.js";
++export declare class Intuit implements OAuth2Provider {
++    private client;
++    private clientSecret;
++    constructor(clientId: string, clientSecret: string, redirectURI: string);
++    createAuthorizationURL(state: string, options?: {
++        scopes?: string[];
++    }): Promise<URL>;
++    validateAuthorizationCode(code: string): Promise<IntuitTokens>;
++    refreshAccessToken(accessToken: string): Promise<IntuitTokens>;
++}
++export interface IntuitTokens {
++    accessToken: string;
++    accessTokenExpiresAt: Date;
++    refreshToken: string;
++    refreshTokenExpiresAt: Date;
++    idToken: string;
++}
+diff --git a/dist/providers/intuit.js b/dist/providers/intuit.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..4e6d027fe2d51b60e3066877bd0c2d0e39de6308
+--- /dev/null
++++ b/dist/providers/intuit.js
+@@ -0,0 +1,47 @@
++import { OAuth2Client } from "oslo/oauth2";
++import { TimeSpan, createDate } from "oslo";
++const authorizeEndpoint = "https://appcenter.intuit.com/connect/oauth2";
++const tokenEndpoint = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer";
++export class Intuit {
++    client;
++    clientSecret;
++    constructor(clientId, clientSecret, redirectURI) {
++        this.client = new OAuth2Client(clientId, authorizeEndpoint, tokenEndpoint, {
++            redirectURI
++        });
++        this.clientSecret = clientSecret;
++    }
++    async createAuthorizationURL(state, options) {
++        const scopes = options?.scopes ?? [];
++        return await this.client.createAuthorizationURL({
++            state,
++            scopes: [...scopes, "openid"]
++        });
++    }
++    async validateAuthorizationCode(code) {
++        const result = await this.client.validateAuthorizationCode(code, {
++            credentials: this.clientSecret
++        });
++        const tokens = {
++            accessToken: result.access_token,
++            accessTokenExpiresAt: createDate(new TimeSpan(result.expires_in, "s")),
++            refreshToken: result.refresh_token,
++            refreshTokenExpiresAt: createDate(new TimeSpan(result.x_refresh_token_expires_in, "s")),
++            idToken: result.id_token
++        };
++        return tokens;
++    }
++    async refreshAccessToken(accessToken) {
++        const result = await this.client.refreshAccessToken(accessToken, {
++            credentials: this.clientSecret
++        });
++        const tokens = {
++            accessToken: result.access_token,
++            accessTokenExpiresAt: createDate(new TimeSpan(result.expires_in, "s")),
++            refreshToken: result.refresh_token,
++            refreshTokenExpiresAt: createDate(new TimeSpan(result.x_refresh_token_expires_in, "s")),
++            idToken: result.id_token
++        };
++        return tokens;
++    }
++}
