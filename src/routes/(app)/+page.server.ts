@@ -2,7 +2,6 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { AIRTABLE_PAT } from '$env/static/private';
 import { EasyAirtableTable } from 'easy-airtable';
-import nlp from 'compromise';
 
 const airtableConfig = {
 	movesGathering: {
@@ -70,7 +69,6 @@ export const load: PageServerLoad = async (event) => {
 					{
 						move: r.fields.Move,
 						moveType: r.fields['Move Type'],
-						person: nlp(r.fields.Move).people().out('array')[0] || '¯\\_(ツ)_/¯',
 						inputted: r.fields.Inputted
 					}
 				])
