@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../../app.pcss';
-	import Home from 'lucide-svelte/icons/home';
+	import House from 'lucide-svelte/icons/house';
 	import Sun from 'lucide-svelte/icons/sun';
 	import Moon from 'lucide-svelte/icons/moon';
 	import PanelLeft from 'lucide-svelte/icons/panel-left';
@@ -58,7 +58,7 @@
 						use:builder.action
 						{...builder}
 					>
-						<Home class="h-5 w-5" />
+						<House class="h-5 w-5" />
 						<span class="sr-only">Dashboard</span>
 					</a>
 				</Tooltip.Trigger>
@@ -174,7 +174,7 @@
 							href="/"
 							class="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
 						>
-							<Home class="h-5 w-5" />
+							<House class="h-5 w-5" />
 							Dashboard
 						</a>
 						<a

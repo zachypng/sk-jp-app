@@ -2,27 +2,19 @@
 	import ArrowUpRight from 'lucide-svelte/icons/arrow-up-right';
 	import Users from 'lucide-svelte/icons/users';
 
-	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { Eye, Loader2, Network, UserCheck, UserPlus } from 'lucide-svelte';
 	import Airtable from '$lib/images/Airtable.svelte';
-	import { onMount } from 'svelte';
 	export let data;
-
-	// console.log(data.streamed.movesGathering);
-	console.log(data.streamed.inputtedMoves);
-	console.log(data.streamed.pendingMoves);
 
 	async function getGroups(
 		val: Promise<
 			{
 				move: any;
 				moveType: any;
-				person: any;
 				inputted: any;
 			}[]
 		>
@@ -31,10 +23,6 @@
 		const res = Object.groupBy(value, ({ moveType }) => moveType);
 		return res;
 	}
-
-	onMount(() => {
-		console.log(getGroups(data.streamed.inputtedMoves));
-	});
 </script>
 
 <svelte:head>

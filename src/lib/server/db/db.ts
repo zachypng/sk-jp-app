@@ -7,8 +7,8 @@ const client = createClient({
 	authToken: TURSO_AUTH_TOKEN
 });
 
-const localClient = createClient({
-	url: 'file:local.db'
-});
+// const localClient = createClient({
+// 	url: 'file:local.db'
+// });
 
 export const db = drizzle(client);
