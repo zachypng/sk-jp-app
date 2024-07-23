@@ -16,7 +16,9 @@ const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 export const airtable = new Airtable(
 	AIRTABLE_CLIENT_ID,
 	AIRTABLE_CLIENT_SECRET,
-	!dev ? 'https://' + VERCEL_URL : BASE_URL + '/login/airtable/callback'
+	!dev
+		? 'https://' + VERCEL_URL + '/login/airtable/callback'
+		: BASE_URL + '/login/airtable/callback'
 );
 
 export const lucia = new Lucia(adapter, {
