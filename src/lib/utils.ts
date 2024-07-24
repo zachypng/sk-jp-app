@@ -175,6 +175,7 @@ interface InputConfig {
 		url: string;
 		fields: {
 			'Move Type'?: string;
+			'Key Move'?: string;
 			'Move by Year'?: string;
 			'Move by Quarter'?: string;
 			'Individual Move Type (relates to position at new Company)'?: string;
@@ -203,6 +204,7 @@ export const inputConfig = writable<InputConfig>({
 	move: {
 		url: 'https://airtable.com/embed/app6rqTtoNCCajSS1/shr20otoaDJph6ZUc',
 		fields: {
+			'Key Move': 'N',
 			'Move Type': 'Outside Move',
 			'Move by Year': new Date().getFullYear().toString(),
 			'Move by Quarter': 'Q' + getQuarter(new Date()).toString()

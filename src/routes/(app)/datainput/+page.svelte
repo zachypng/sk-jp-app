@@ -499,6 +499,36 @@
 										</Select.Root>
 									</div>
 									<div class="my-2">
+										<Label class="mt-4 text-lg" for="keyMove">Key Move</Label>
+										<p class="my-1 text-sm text-muted-foreground">Select a default value</p>
+										<Select.Root
+											onSelectedChange={(v) => {
+												if ($inputConfig.move && $inputConfig.move.fields) {
+													if (v && v.value) {
+														$inputConfig.move.fields['Key Move'] = v.value.toString();
+													} else {
+														$inputConfig.move.fields['Key Move'] = undefined;
+													}
+												}
+											}}
+											selected={$inputConfig.move.fields['Key Move']
+												? { value: $inputConfig.move.fields['Key Move'] }
+												: undefined}
+										>
+											<Select.Trigger class="w-full max-w-md">
+												<Select.Value
+													placeholder={$inputConfig.move.fields['Key Move'] ??
+														'Select a default value...'}
+												/>
+											</Select.Trigger>
+											<Select.Content class="max-h-64 overflow-y-scroll">
+												<Select.Item value="">None</Select.Item>
+												<Select.Item value="Y">Y</Select.Item>
+												<Select.Item value="N">N</Select.Item>
+											</Select.Content>
+										</Select.Root>
+									</div>
+									<div class="my-2">
 										<Label class="mt-4 text-lg" for="moveByYear">Move By Year</Label>
 										<p class="my-1 text-sm text-muted-foreground">Select a default year</p>
 										<Select.Root
