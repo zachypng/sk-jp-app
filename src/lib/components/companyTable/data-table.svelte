@@ -3,7 +3,6 @@
 	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
 	import * as Table from '$lib/components/ui/table';
-	import * as Popover from '$lib/components/ui/popover';
 	import DataTableActions from './data-table-actions.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import {
@@ -12,7 +11,7 @@
 		ChevronRight,
 		ChevronsLeft,
 		ChevronsRight,
-		Filter
+		Search
 	} from 'lucide-svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { fade } from 'svelte/transition';
@@ -119,23 +118,19 @@
 	const { filterValue } = pluginStates.filter;
 </script>
 
-<Popover.Root>
-	<Popover.Trigger class="mb-2 py-2">
-		<Button variant="outline" class="bg-muted/50 shadow-sm dark:bg-muted/20"
-			><Filter class="mr-2 h-4 w-4" />Filter</Button
-		>
-	</Popover.Trigger>
-	<Popover.Content
-		><Input
-			class="max-w-sm bg-muted/50 shadow-sm dark:bg-muted/20"
-			placeholder="Search {route} list..."
-			type="text"
-			bind:value={$filterValue}
-		/></Popover.Content
-	>
-</Popover.Root>
+<div class="sticky top-[72px] z-50 w-full rounded-t-md border bg-background py-3">
+	<Search
+		class="pointer-events-none absolute left-8 top-1/2 mr-2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+	/>
+	<Input
+		class="ml-6 max-w-sm bg-muted/50 pl-8 shadow-sm dark:bg-muted/20"
+		placeholder="Search {route} list..."
+		type="text"
+		bind:value={$filterValue}
+	/>
+</div>
 <div
-	class="rounded-md border bg-muted/50 shadow-md dark:bg-muted/20"
+	class="rounded-b-md border-x border-b bg-muted/50 shadow-md dark:bg-muted/20"
 	transition:fade={{ duration: 300 }}
 >
 	<Table.Root {...$tableAttrs}>

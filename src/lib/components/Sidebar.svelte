@@ -18,15 +18,12 @@
 	import { mode } from 'mode-watcher';
 </script>
 
-<!-- <aside
-	class="relative mx-auto mr-auto h-[calc(100vh-4rem)] max-w-xs items-center justify-center border-l bg-muted/50 dark:bg-muted/20"
-> -->
-<div class="flex w-full flex-col space-y-2 p-4">
+<div class="flex h-full w-full flex-col space-y-2 overflow-scroll p-4">
 	<Tooltip.Root>
 		<Tooltip.Trigger>
 			<Button
 				variant="ghost"
-				class="max-w-16 h-full w-full items-center"
+				class="h-full max-h-20 w-full max-w-16 items-center"
 				on:click={() => {
 					$orgchartConfig.showInfo = !$orgchartConfig.showInfo;
 				}}
@@ -37,7 +34,7 @@
 						: 'text-muted-foreground'}"
 				>
 					<Info class="h-5 w-5" />
-					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+					<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
 						Info
 					</p>
 				</div>
@@ -51,7 +48,7 @@
 		<Tooltip.Trigger>
 			<Button
 				variant="ghost"
-				class="max-w-16 h-full w-full items-center"
+				class="h-full max-h-20 w-full max-w-16 items-center"
 				on:click={() => {
 					$orgchartConfig.searchOpen = !$orgchartConfig.searchOpen;
 				}}
@@ -62,10 +59,10 @@
 						: 'text-muted-foreground'}"
 				>
 					<Search class="h-5 w-5" />
-					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+					<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
 						Search
 					</p>
-					<kbd class="text-xxs mt-2 rounded bg-muted px-1">Ctrl + K</kbd>
+					<kbd class="mt-2 rounded bg-muted px-1 text-xxs">Ctrl + K</kbd>
 				</div>
 			</Button>
 		</Tooltip.Trigger>
@@ -77,7 +74,7 @@
 		<Tooltip.Trigger>
 			<Button
 				variant="ghost"
-				class="max-w-16 h-full w-full items-center"
+				class="h-full max-h-20 w-full max-w-16 items-center"
 				on:click={() => {
 					$orgchartConfig.showPhotos = !$orgchartConfig.showPhotos;
 				}}
@@ -88,7 +85,7 @@
 						: 'text-muted-foreground'}"
 				>
 					<Image class="h-5 w-5" />
-					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+					<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
 						Photos
 					</p>
 				</div>
@@ -102,7 +99,7 @@
 		<Tooltip.Trigger>
 			<Button
 				variant="ghost"
-				class="max-w-16 h-full w-full items-center"
+				class="h-full max-h-20 w-full max-w-16 items-center"
 				on:click={() => {
 					$orgchartConfig.showBios = !$orgchartConfig.showBios;
 				}}
@@ -113,7 +110,7 @@
 						: 'text-muted-foreground'}"
 				>
 					<Text class="h-5 w-5" />
-					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+					<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
 						Bios
 					</p>
 				</div>
@@ -130,11 +127,15 @@
 		<Tooltip.Trigger>
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger asChild let:builder>
-					<Button variant="ghost" class="max-w-16 h-full w-full items-center" builders={[builder]}>
+					<Button
+						variant="ghost"
+						class="h-full max-h-20 w-full max-w-16 items-center"
+						builders={[builder]}
+					>
 						<div class="flex w-full flex-col items-center justify-center text-muted-foreground">
 							<SquareMousePointer class="h-5 w-5" />
 							<p
-								class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs"
+								class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs"
 							>
 								Detail
 							</p>
@@ -174,7 +175,7 @@
 		<Tooltip.Trigger>
 			<Button
 				variant="ghost"
-				class="max-w-16 h-full w-full items-center"
+				class="h-full max-h-20 w-full max-w-16 items-center"
 				on:click={() => {
 					$orgchartConfig.allowEdits = !$orgchartConfig.allowEdits;
 				}}
@@ -185,7 +186,7 @@
 						: 'text-muted-foreground'}"
 				>
 					<Shovel class="h-5 w-5" />
-					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+					<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
 						Edit Mode
 					</p>
 				</div>
@@ -202,7 +203,7 @@
 		<Tooltip.Trigger>
 			<Button
 				variant="ghost"
-				class="max-w-16 h-full w-full items-center"
+				class="h-full max-h-20 w-full max-w-16 items-center"
 				on:click={() => {
 					$orgchartConfig.showNodeCount = !$orgchartConfig.showNodeCount;
 				}}
@@ -213,7 +214,7 @@
 						: 'text-muted-foreground'}"
 				>
 					<Hash class="h-5 w-5" />
-					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+					<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
 						Node Count
 					</p>
 				</div>
@@ -232,7 +233,7 @@
 			<Tooltip.Trigger>
 				<Button
 					variant="ghost"
-					class="max-w-16 h-full w-full items-center"
+					class="h-full max-h-20 w-full max-w-16 items-center"
 					on:click={() => {
 						$orgchartConfig.downloadOpen = !$orgchartConfig.downloadOpen;
 					}}
@@ -243,7 +244,7 @@
 							: 'text-muted-foreground'}"
 					>
 						<Download class="h-5 w-5" />
-						<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+						<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
 							Download
 						</p>
 					</div>
@@ -254,31 +255,33 @@
 			</Tooltip.Content>
 		</Tooltip.Root>
 	{:else}
-		<Button variant="ghost" disabled class="max-w-16 h-full w-full items-center">
-			<div
-				class="flex w-full flex-col items-center justify-center {$orgchartConfig.downloadOpen
-					? 'text-sky-500'
-					: 'text-muted-foreground'}"
-			>
-				<Ban class="h-5 w-5" />
-				<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
-					Download
-				</p>
-			</div>
-		</Button>
+		<Tooltip.Root>
+			<Tooltip.Trigger>
+				<Button variant="ghost" disabled class="h-full max-h-20 w-full max-w-16 items-center">
+					<div
+						class="flex w-full flex-col items-center justify-center {$orgchartConfig.downloadOpen
+							? 'text-sky-500'
+							: 'text-muted-foreground'}"
+					>
+						<Ban class="h-5 w-5" />
+						<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
+							Download
+						</p>
+					</div>
+				</Button>
+			</Tooltip.Trigger>
+			<Tooltip.Content side="left">
+				<p class="text-sm">Switch to light mode to download an SVG copy of the orgchart.</p>
+			</Tooltip.Content>
+		</Tooltip.Root>
 	{/if}
-</div>
-<div class="absolute bottom-0 flex w-full flex-col justify-end space-y-4 p-4">
+	<div class="grow"></div>
 	<Tooltip.Root>
 		<Tooltip.Trigger>
-			<Button
-				variant="ghost"
-				class="max-w-16 h-full w-full items-center justify-end place-self-end"
-				href="/orgchart"
-			>
+			<Button variant="ghost" class="mt-auto h-full w-full max-w-16 items-center" href="/orgchart">
 				<div class="flex w-full flex-col items-center justify-center text-muted-foreground">
 					<ArrowLeftToLine class="h-5 w-5" />
-					<p class="max-w-8 mt-2 flex justify-center whitespace-break-spaces text-center text-xs">
+					<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
 						Back
 					</p>
 				</div>
@@ -291,4 +294,3 @@
 		</Tooltip.Content>
 	</Tooltip.Root>
 </div>
-<!-- </aside> -->

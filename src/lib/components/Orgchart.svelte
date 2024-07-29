@@ -640,18 +640,23 @@
 				</Button>
 			</Popover.Trigger>
 			<Popover.Content class="w-full max-w-md p-0" side="top">
-				<Command.Root>
+				<Command.Root
+					filter={(value, search) => {
+						if (value.includes(search.toLowerCase())) return 1;
+						return 0;
+					}}
+				>
 					<Command.Input placeholder="Search nodes..." />
 					<Command.Empty>Node not found.</Command.Empty>
 					<Command.Group class="max-h-64 overflow-scroll" heading="Names">
 						{#each [...positions].slice(1).sort((a, b) => a.name.localeCompare(b.name)) as position}
 							<Command.Item
-								value={position.name}
+								value={position.name + '?' + position.title}
 								onSelect={(currentValue) => {
 									value = currentValue;
 									closeAndFocusTrigger(ids.trigger);
-									searchDiagram(value);
-									open = false;
+									searchDiagram(value.replace(RegExp('\\?(.*)'), ''));
+									// open = false;
 									$orgchartConfig.searchOpen = false;
 								}}
 							>
@@ -675,7 +680,7 @@
 	class="z-10 h-[calc(100vh-73px)] w-full max-w-[calc(100vw-9.45rem)] justify-center overflow-y-hidden"
 />
 <div
-	class="absolute bottom-2 left-14 z-30 flex cursor-default rounded-md text-xs text-muted-foreground/50"
+	class="absolute bottom-2 left-16 z-30 flex cursor-default rounded-md border bg-background text-sm text-muted-foreground shadow dark:text-muted-foreground"
 >
 	{#if $orgchartConfig.showNodeCount}
 		{#if positions.length - 1 !== nodeCount}

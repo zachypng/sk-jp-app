@@ -17,8 +17,16 @@
 <div class="mx-auto flex w-full max-w-5xl items-center justify-center pt-12">
 	<Tabs.Root value={$orgchartConfig.lastTab} class="w-full">
 		<Tabs.List class="grid w-full grid-cols-2 shadow">
-			<Tabs.Trigger value="company">Company</Tabs.Trigger>
-			<Tabs.Trigger value="view">View</Tabs.Trigger>
+			<Tabs.Trigger
+				value="company"
+				class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+				>Company</Tabs.Trigger
+			>
+			<Tabs.Trigger
+				value="view"
+				class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+				>View</Tabs.Trigger
+			>
 		</Tabs.List>
 		<Tabs.Content value="company">
 			<div class="mx-auto w-full max-w-5xl py-8">

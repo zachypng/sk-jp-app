@@ -201,6 +201,7 @@
 																href="/orgchart/company/{record.company_id}"
 																size="sm"
 																variant="outline"
+																class="w-full"
 															>
 																<Eye class="mr-2 h-4 w-4" />
 																View Orgchart
@@ -288,6 +289,7 @@
 															size="sm"
 															target="_blank"
 															variant="outline"
+															class="w-full"
 														>
 															<Airtable class="mr-2 h-4 w-4" />
 															View Record
