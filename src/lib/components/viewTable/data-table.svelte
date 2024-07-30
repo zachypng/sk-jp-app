@@ -85,6 +85,15 @@
 	const { filterValue } = pluginStates.filter;
 </script>
 
+<svelte:window
+	on:keydown={(e) => {
+		if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			document.getElementById('view-input')?.focus();
+		}
+	}}
+/>
+
 <div class="sticky top-[72px] z-50 w-full rounded-t-md border bg-background py-3">
 	<Search
 		class="pointer-events-none absolute left-10 top-1/2 mr-2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
@@ -93,8 +102,12 @@
 		class="ml-8 max-w-sm bg-muted/50 pl-8 shadow-sm dark:bg-muted/20"
 		placeholder="Search {route} list..."
 		type="text"
+		id="view-input"
 		bind:value={$filterValue}
 	/>
+	<div class="absolute left-[21rem] top-1/2 -translate-y-1/2 text-muted-foreground">
+		<kbd class="mt-2 rounded bg-muted px-1 text-xs">Ctrl + K</kbd>
+	</div>
 </div>
 <div
 	class="rounded-b-md border-x border-b bg-muted/50 shadow-md dark:bg-muted/20"

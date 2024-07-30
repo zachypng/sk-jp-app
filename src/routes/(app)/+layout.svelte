@@ -237,6 +237,52 @@
 						>
 					{/if}
 					<DropdownMenu.Separator />
+					{#if $page.url.pathname.includes('/orgchart/view/viw') || $page.url.pathname.includes('/orgchart/company/rec')}
+						<DropdownMenu.Label>Keyboard Shortcuts</DropdownMenu.Label>
+						<DropdownMenu.Item>
+							<span class="mr-2">Info</span>
+							<DropdownMenu.Shortcut class="rounded-md bg-muted p-1 text-xs">
+								Ctrl+I
+							</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item>
+							<span class="mr-2">Search</span>
+							<DropdownMenu.Shortcut class="rounded-md bg-muted p-1 text-xs">
+								Ctrl+K
+							</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item>
+							<span class="mr-2">Photos</span>
+							<DropdownMenu.Shortcut class="rounded-md bg-muted p-1 text-xs">
+								Ctrl+;
+							</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item>
+							<span class="mr-2">Bios</span>
+							<DropdownMenu.Shortcut class="rounded-md bg-muted p-1 text-xs">
+								Ctrl+B
+							</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item>
+							<span class="mr-2">Edit Mode</span>
+							<DropdownMenu.Shortcut class="rounded-md bg-muted p-1 text-xs">
+								Ctrl+M
+							</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item>
+							<span class="mr-2">Node Count</span>
+							<DropdownMenu.Shortcut class="rounded-md bg-muted p-1 text-xs">
+								Ctrl+U
+							</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item>
+							<span class="mr-2">Back</span>
+							<DropdownMenu.Shortcut class="rounded-md bg-muted p-1 text-xs">
+								Ctrl+/
+							</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Separator />
+					{/if}
 					<DropdownMenu.Item href="/settings">Settings</DropdownMenu.Item>
 					<DropdownMenu.Separator />
 					<DropdownMenu.Item class="text-destructive" href="/logout">Logout</DropdownMenu.Item>

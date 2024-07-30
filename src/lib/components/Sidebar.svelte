@@ -18,6 +18,30 @@
 	import { mode } from 'mode-watcher';
 </script>
 
+<svelte:window
+	on:keydown={(e) => {
+		if (e.key === 'i' && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			$orgchartConfig.showInfo = !$orgchartConfig.showInfo;
+		} else if (e.key === 'b' && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			$orgchartConfig.showBios = !$orgchartConfig.showBios;
+		} else if (e.key === 'u' && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			$orgchartConfig.showNodeCount = !$orgchartConfig.showNodeCount;
+		} else if (e.key === 'm' && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			$orgchartConfig.allowEdits = !$orgchartConfig.allowEdits;
+		} else if ((e.key === '/' || e.key === 'NumpadDivide') && (e.ctrlKey || e.metaKey)) {
+			e.preventDefault();
+			window.history.back();
+		} else if (e.key === ';' && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			$orgchartConfig.showPhotos = !$orgchartConfig.showPhotos;
+		}
+	}}
+/>
+
 <div class="flex h-full w-full flex-col space-y-2 overflow-scroll p-4">
 	<Tooltip.Root>
 		<Tooltip.Trigger>
@@ -62,7 +86,6 @@
 					<p class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs">
 						Search
 					</p>
-					<kbd class="mt-2 rounded bg-muted px-1 text-xxs">Ctrl + K</kbd>
 				</div>
 			</Button>
 		</Tooltip.Trigger>

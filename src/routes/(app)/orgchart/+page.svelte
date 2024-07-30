@@ -14,18 +14,44 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
+<svelte:window
+	on:keydown={(e) => {
+		if ((e.key === '/' || e.key === 'NumpadDivide') && (e.ctrlKey || e.metaKey)) {
+			if ($orgchartConfig.lastTab === 'view') {
+				$orgchartConfig.lastTab = 'company';
+			} else {
+				$orgchartConfig.lastTab = 'view';
+			}
+		}
+	}}
+/>
+
 <div class="mx-auto flex w-full max-w-5xl items-center justify-center pt-12">
 	<Tabs.Root value={$orgchartConfig.lastTab} class="w-full">
 		<Tabs.List class="grid w-full grid-cols-2 shadow">
 			<Tabs.Trigger
 				value="company"
 				class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-				>Company</Tabs.Trigger
 			>
+				<div class="text-xs">
+					<span class="mr-2 text-sm">Company</span>
+					{#if $orgchartConfig.lastTab === 'view'}
+						<kbd class="mt-2 rounded bg-muted-foreground/20 px-1 text-muted-foreground">Ctrl</kbd> +
+						<kbd class="mt-2 rounded bg-muted-foreground/20 px-1 text-muted-foreground">/</kbd>
+					{/if}
+				</div>
+			</Tabs.Trigger>
 			<Tabs.Trigger
 				value="view"
 				class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-				>View</Tabs.Trigger
+			>
+				<div class="text-xs">
+					<span class="mr-2 text-sm">View</span>
+					{#if $orgchartConfig.lastTab === 'company'}
+						<kbd class="mt-2 rounded bg-muted-foreground/20 px-1 text-muted-foreground">Ctrl</kbd> +
+						<kbd class="mt-2 rounded bg-muted-foreground/20 px-1 text-muted-foreground">/</kbd>
+					{/if}
+				</div></Tabs.Trigger
 			>
 		</Tabs.List>
 		<Tabs.Content value="company">

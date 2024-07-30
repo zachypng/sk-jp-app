@@ -41,6 +41,15 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
+<svelte:window
+	on:keydown={(e) => {
+		if (e.key === ' ' && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			autofillOpen = !autofillOpen;
+		}
+	}}
+/>
+
 <Dialog.Root bind:open={popupOpen}>
 	<Dialog.Content>
 		<Dialog.Header>
@@ -112,8 +121,14 @@
 						<Button
 							builders={[builder]}
 							variant={$mode === 'dark' ? 'secondary' : 'default'}
-							class="mx-auto w-full">Open Autofill Settings</Button
+							class="mx-auto w-full"
 						>
+							<span class="mr-2">Open Autofill Settings</span>
+							<kbd
+								class="rounded-md border p-1 text-xs dark:border-muted-foreground/60 dark:text-muted-foreground"
+								>Ctrl + Space</kbd
+							>
+						</Button>
 					</Dialog.Trigger>
 					<Dialog.Content class="h-[calc(100vh-20rem)]">
 						<div class="mx-auto w-full max-w-md overflow-scroll">
