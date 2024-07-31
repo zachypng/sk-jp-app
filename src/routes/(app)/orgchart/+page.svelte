@@ -32,6 +32,7 @@
 			<Tabs.Trigger
 				value="company"
 				class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+				on:click={() => ($orgchartConfig.lastTab = 'company')}
 			>
 				<div class="text-xs">
 					<span class="mr-2 text-sm">Company</span>
@@ -44,6 +45,7 @@
 			<Tabs.Trigger
 				value="view"
 				class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+				on:click={() => ($orgchartConfig.lastTab = 'view')}
 			>
 				<div class="text-xs">
 					<span class="mr-2 text-sm">View</span>

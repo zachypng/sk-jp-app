@@ -7,7 +7,6 @@
 	import * as go from 'gojs';
 	import { AlertCircle, Check, ChevronsUpDown, Search } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { Input } from '$lib/components/ui/input';
 	import { enhance } from '$app/forms';
 	import { cn, orgchartConfig, slugify } from '$lib/utils';
 	import { Node } from 'gojs';
@@ -28,14 +27,11 @@
 	let open = true;
 
 	$: searchString = positions.find((f) => f.name === value)?.name ?? 'Search nodes...';
-	// $: searchString = '';
 	$: positionID = '';
 	$: managerID = '';
 	$: nodeCount = 0;
 
 	export let positions: Position[];
-
-	// let parentMap = positions.map((e) => e.parent);
 
 	onMount(() => {
 		function setDraggedLinkVisibility(tool: go.DraggingTool, val: boolean) {
@@ -96,8 +92,6 @@
 			}
 		);
 
-		// when the document is modified, add a "*" to the title and enable the "Save" button
-
 		// set up some colors/fonts for the default ('light') and dark Themes
 		myDiagram.themeManager.set('light', {
 			colors: {
@@ -128,9 +122,7 @@
 				highlight: '#facc15'
 			},
 			fonts: {
-				// name: '500 0.875rem Inter, sans-serif',
 				name: '700 1.2rem Inter, sans-serif',
-				// normal: '1rem Inter, sans-serif',
 				normal: '0.875rem Inter, sans-serif',
 				badge: '500 0.75rem Inter, sans-serif',
 				link: '600 0.875rem Inter, sans-serif'
@@ -154,9 +146,7 @@
 				highlight: '#facc15'
 			},
 			fonts: {
-				// name: '500 0.875rem Inter, sans-serif',
 				name: '700 1.2rem Inter, sans-serif',
-				// normal: '1rem Inter, sans-serif',
 				normal: '0.875rem Inter, sans-serif',
 				badge: '500 0.75rem Inter, sans-serif',
 				link: '600 0.875rem Inter, sans-serif'
@@ -168,7 +158,7 @@
 			if (!(node1 instanceof go.Node && node2 instanceof go.Node)) return false; // must be a Node
 			if (node1 === node2) return false; // cannot work for yourself
 			if (node2.isInTreeOf(node1)) return false; // cannot work for someone who works for you
-			if (node2.findTreeRoot() === node2) return false; // you cannot change manager to company record lol
+			if (node2.findTreeRoot() === node2) return true; // switch to false to disallow moving to root node, there is built-in logic to handle this in the form action
 			return true;
 		}
 
@@ -176,31 +166,6 @@
 		function getNodeCount() {
 			nodeCount = myDiagram.nodes.count - 1;
 		}
-
-		// function removeHangers(nodes: Node) {
-		// 	for (let i = 0; i < nodes.length; i++) {
-		// 		if (nodes[i].data.parent === )
-		// 	}
-
-		// 	if (node !== null) {
-		// 				myDiagram.model.commit((m) => {
-		// 					const chl = node.findTreeChildrenNodes();
-		// 					// iterate through the children and set their parent key to our selected node's parent key
-		// 					while (chl.next()) {
-		// 						const emp = chl.value;
-		// 						m.setParentKeyForNodeData(emp.data, node.findTreeParentNode().data.key);
-		// 					}
-		// 					// and now remove the selected node itself
-		// 					m.removeNodeData(node.data);
-		// 				}, 'reparent remove');
-		// 			}
-		// }
-
-		// This converter is used by the Picture.
-		// function findHeadShot(pic) {
-		// 	if (!pic) return '../samples/images/user.svg'; // There are only 16 images on the server
-		// 	return '../samples/images/HS' + pic;
-		// }
 
 		// Used to convert the node's tree level into a theme color
 		function findLevelColor(node: Node) {
@@ -212,11 +177,6 @@
 			isShadowed: true,
 			shadowOffset: new go.Point(0, 2),
 			selectionObjectName: 'BODY',
-			// show/hide buttons when mouse enters/leaves
-			// mouseEnter: (e, node) =>
-			// 	(node.findObject('BUTTON').opacity = node.findObject('BUTTONX').opacity = 1),
-			// mouseLeave: (e, node) =>
-			// 	(node.findObject('BUTTON').opacity = node.findObject('BUTTONX').opacity = 0),
 			// handle dragging a Node onto a Node to (maybe) change the reporting relationship
 			mouseDragEnter: (e, obj, prev) => {
 				const diagram = obj.diagram;
@@ -272,7 +232,6 @@
 						.add(
 							new go.TextBlock({
 								margin: 8,
-								// maxSize: new go.Size(480, 240),
 								wrap: go.Wrap.Fit,
 								maxLines: 24,
 								visible: $orgchartConfig.showBios,
@@ -325,25 +284,6 @@
 													.bindTwoWay('text', 'name')
 													.theme('stroke', 'text')
 													.theme('font', 'name')
-												// new go.Panel(go.Panel.Auto, { margin: new go.Margin(0, 0, 0, 10) }).add(
-												// 	new go.Shape('Capsule', {
-												// 		parameter1: 6,
-												// 		parameter2: 6,
-												// 		visible: false
-												// 	})
-												// 		.bind('visible', 'location', () => (location ? true : false))
-												// 		.theme('fill', 'badge')
-												// 		.theme('stroke', 'badgeBorder'),
-												// 	new go.TextBlock({
-												// 		editable: true,
-												// 		minSize: new go.Size(10, 12),
-												// 		margin: new go.Margin(2, -1)
-												// 	})
-												// 		.bindTwoWay('text', 'location')
-												// 		.bind('visible', 'location', () => (location ? true : false))
-												// 		.theme('stroke', 'badgeText')
-												// 		.theme('font', 'badge')
-												// )
 											),
 											new go.TextBlock({
 												row: 1,
@@ -392,13 +332,6 @@
 											.theme('stroke', 'subtext')
 											.theme('font', 'normal')
 									)
-								// new go.Panel(go.Panel.Table, {
-								// 	row: 1,
-								// 	stretch: go.Stretch.Horizontal,
-								// 	defaultColumnSeparatorStrokeWidth: 0.5
-								// })
-								// 	.theme('defaultColumnSeparatorStroke', 'divider')
-								// 	.add(makeBottomButton('EMAIL'), makeBottomButton('PHONE'))
 							)
 					), // end Auto Panel
 				new go.Shape('RoundedLeftRectangle', {
@@ -503,12 +436,6 @@
 		a.href = url;
 		a.download = filename;
 
-		// IE 11 - should not be necessary, commented out to avoid having to global declare Navigator and such
-		// if (window.navigator.msSaveBlob !== undefined) {
-		// 	window.navigator.msSaveBlob(blob, filename);
-		// 	return;
-		// }
-
 		document.body.appendChild(a);
 		requestAnimationFrame(() => {
 			a.click();
@@ -537,7 +464,6 @@
 
 	function searchDiagram(input: string) {
 		// called by button
-		// var input = searchString;
 		if (!input) return;
 		myDiagram.focus();
 
@@ -579,11 +505,9 @@
 	use:enhance
 	bind:this={form}
 >
-	<!-- <label for="positionID">Position ID</label> -->
 	<input type="hidden" name="positionID" bind:value={positionID} />
-	<!-- <label for="managerID">Manager ID</label> -->
 	<input type="hidden" name="managerID" bind:value={managerID} />
-	<!-- <button type="submit" class="rounded-md border p-3">Update Man</button> -->
+	<input type="hidden" name="rootNode" bind:value={positions[0].key} />
 </form>
 
 <Dialog.Root
@@ -621,11 +545,6 @@
 			</Dialog.Title>
 			<Dialog.Description>Find a node by name and center the viewport</Dialog.Description>
 		</Dialog.Header>
-		<!-- <Input bind:value={searchString} placeholder="Search nodes..." />
-		<Button
-			on:click={() => searchDiagram(searchString)}
-			on:click={() => ($orgchartConfig.searchOpen = false)}>Search</Button
-		> -->
 		<Popover.Root bind:open let:ids>
 			<Popover.Trigger asChild let:builder>
 				<Button
@@ -656,7 +575,6 @@
 									value = currentValue;
 									closeAndFocusTrigger(ids.trigger);
 									searchDiagram(value.replace(RegExp('\\?(.*)'), ''));
-									// open = false;
 									$orgchartConfig.searchOpen = false;
 								}}
 							>

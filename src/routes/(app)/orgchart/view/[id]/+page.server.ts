@@ -184,8 +184,21 @@ export const actions = {
 		const data = await request.formData();
 		const positionID = data.get('positionID') as string;
 		const managerID = data.get('managerID') as string;
+		const rootNode = data.get('rootNode') as string;
 
 		const table = EasyAirtableTable.fromConfig(tableList.Position);
-		table.updateOne(positionID, { Manager: managerID });
+		if (managerID === rootNode) {
+			try {
+				table.updateOne(positionID, { Manager: '' });
+			} catch (error) {
+				console.log(error);
+			}
+		} else {
+			try {
+				table.updateOne(positionID, { Manager: managerID });
+			} catch (error) {
+				console.log(error);
+			}
+		}
 	}
 };
