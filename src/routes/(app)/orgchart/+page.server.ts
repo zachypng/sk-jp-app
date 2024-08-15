@@ -1,5 +1,5 @@
 import { AIRTABLE_PAT } from '$env/static/private';
-import type { ATTable, ATView } from '$lib/utils.js';
+import type { ATTable, ATView } from '$lib/config';
 import { EasyAirtableTable } from 'easy-airtable';
 import type { PageServerLoad } from '../$types';
 import { redirect } from '@sveltejs/kit';

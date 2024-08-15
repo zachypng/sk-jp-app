@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { paragraphify } from '$lib/utils.js';
+	import { paragraphify } from '$lib/utils';
 	import { Flag, FlagOff, MinusCircle, PlusCircle } from 'lucide-svelte';
-	import type { ATCompany, ATMove } from '$lib/utils.js';
+	import type { ATCompany, ATMove } from '$lib/config';
 
 	export let companyData: ATCompany;
 	export let moveData: { keyHires: ATMove[]; keyDepartures: ATMove[]; general: ATMove[] };
@@ -19,7 +19,6 @@
 		</h3>
 	</div>
 </div>
-<!-- <Separator class="mx-auto my-6 w-[75%] justify-center" /> -->
 <div class="px-6 py-4">
 	{#if moveData.keyHires.length > 0}
 		<h3 class="text-md my-4 scroll-m-20 font-black tracking-tight">Key Hires:</h3>

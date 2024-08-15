@@ -2,7 +2,7 @@
 	import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui';
 	import Circle from 'lucide-svelte/icons/circle';
 	import { cn } from '$lib/utils.js';
-	import { Boxes, MapPin, User } from 'lucide-svelte';
+	import { AlignLeft, Boxes, MapPin, User } from 'lucide-svelte';
 
 	type $$Props = DropdownMenuPrimitive.RadioItemProps;
 	type $$Events = DropdownMenuPrimitive.RadioItemEvents;
@@ -35,8 +35,12 @@
 				<MapPin class="h-4 w-4" />
 			{:else if value === 'gender'}
 				<User class="h-4 w-4 " />
+			{:else if value === 'ethnicity'}
+				<User class="h-4 w-4" />
+			{:else if value === 'level'}
+				<AlignLeft class="h-4 w-4" />
 			{:else}
-				<Circle class="h-2 w-2 fill-current" />
+				<Circle class="h-4 w-4" />
 			{/if}
 		</DropdownMenuPrimitive.RadioIndicator>
 	</span>

@@ -8,7 +8,8 @@
 	import { AlertCircle, Check, ChevronsUpDown, Search } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { enhance } from '$app/forms';
-	import { cn, orgchartConfig, slugify } from '$lib/utils';
+	import { cn, slugify } from '$lib/utils';
+	import { orgchartConfig } from '$lib/config';
 	import { Node } from 'gojs';
 
 	type Position = {
@@ -18,6 +19,10 @@
 		title?: string;
 		location?: string;
 		biography?: string;
+		gender?: string;
+		department?: string;
+		photoURL?: string;
+		ethnicity?: string;
 	};
 
 	let myDiagram: go.Diagram;
@@ -32,6 +37,9 @@
 	$: nodeCount = 0;
 
 	export let positions: Position[];
+
+	let departments = [...new Set(positions.map((p) => p.department))];
+	let ethnicities = [...new Set(positions.map((p) => p.ethnicity))];
 
 	onMount(() => {
 		function setDraggedLinkVisibility(tool: go.DraggingTool, val: boolean) {
@@ -83,7 +91,7 @@
 				'toolManager.toolTipDuration': $orgchartConfig.showBios ? Infinity : 0,
 				'draggingTool.dragsLink': false,
 				'draggingTool.isGridSnapEnabled': true,
-				'draggingTool.gridSnapCellSize': new go.Size(10, 10),
+				'draggingTool.gridSnapCellSize': new go.Size(2, 2),
 				'draggingTool.dragsTree': true,
 				'dragSelectingTool.isEnabled': false,
 				LayoutCompleted: (e) => {
@@ -169,7 +177,15 @@
 
 		// Used to convert the node's tree level into a theme color
 		function findLevelColor(node: Node) {
-			return node.findTreeLevel();
+			if ($orgchartConfig.colorBy === 'ethnicity' && node.data.ethnicity) {
+				return ethnicities.indexOf(node.data.ethnicity);
+			} else if ($orgchartConfig.colorBy === 'department' && node.data.department) {
+				return departments.indexOf(node.data.department);
+			} else if ($orgchartConfig.colorBy === 'level') {
+				return node.findTreeLevel();
+			} else {
+				return 0;
+			}
 		}
 
 		// define the Node template

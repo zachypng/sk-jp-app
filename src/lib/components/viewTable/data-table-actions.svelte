@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { orgchartConfig } from '$lib/utils';
+	import { orgchartConfig } from '$lib/config';
 	import { Eye } from 'lucide-svelte';
 	export let id: string;
 	export let route: 'company' | 'view';

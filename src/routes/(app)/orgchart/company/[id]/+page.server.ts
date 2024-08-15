@@ -1,5 +1,3 @@
-// export const csr = true;
-
 import { AIRTABLE_PAT } from '$env/static/private';
 import { EasyAirtableTable } from 'easy-airtable';
 import { differenceInYears, differenceInMonths } from 'date-fns';
@@ -12,10 +10,12 @@ const getMonthYear = (date: string) => {
 };
 
 const getTenure = (startDate: string, endDate: string) => {
-	if (differenceInYears(new Date(endDate), new Date(startDate)) < 2) {
-		return differenceInMonths(new Date(endDate), new Date(startDate)) + ' months';
+	const start = new Date(startDate);
+	const end = new Date(endDate);
+	if (differenceInYears(end, start) < 2) {
+		return differenceInMonths(end, start) + ' months';
 	} else {
-		return differenceInYears(new Date(endDate), new Date(startDate)) + ' years';
+		return differenceInYears(end, start) + ' years';
 	}
 };
 
@@ -48,14 +48,27 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const positionTable = EasyAirtableTable.fromConfig(tableList.Position);
 	const positionRecords = await positionTable.findAll({
-		view: 'viw3yw95f2rQUhQ6M',
-		filterByFormula: `{fldhlHYVgpvmql1On}='${params.id}'`
+		view: 'viw3yw95f2rQUhQ6M', // Distribution View (All)
+		filterByFormula: `{company_id}='${params.id}'`,
+		fields: [
+			'position_id',
+			'Company',
+			'person_name',
+			'manager_id',
+			'Concatenate Title',
+			'Photo (from Person)',
+			'locationText',
+			'Biography (from Person)',
+			'departmentText',
+			'Gender (from Person)',
+			'ethnicityText'
+		]
 	});
 
 	const movesTable = EasyAirtableTable.fromConfig(tableList.Moves);
 	const movesRecords = await movesTable.findAll({
-		filterByFormula: `AND(OR({Company (from Previous Position)}='${selectedCompany.fields.Company}', {Company (from New Position)}='${selectedCompany.fields.Company}'), {fldWcDuquxc0jf9vS}='External')`,
-		sort: [{ field: 'fld2STUK7uTIu1SlB', direction: 'desc' }]
+		filterByFormula: `AND(OR({Company (from Previous Position)}='${selectedCompany.fields.Company}', {Company (from New Position)}='${selectedCompany.fields.Company}'), {fldWcDuquxc0jf9vS}='External')`, // Move Type
+		sort: [{ field: 'fld2STUK7uTIu1SlB', direction: 'desc' }] // Start Date (from New Position)
 	});
 
 	const moves = movesRecords
@@ -102,11 +115,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			}
 		]);
 
-	// console.log(selectedCompany.fields.Logo);
-	// console.log(
-	// 	positionRecords.map((record) => record._rawJson.fields['Photo (from Person)'][0].thumbnails)
-	// );
-
 	const positions = [
 		{
 			key: selectedCompany.id,
@@ -116,7 +124,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					? selectedCompany.fields.Logo[0].url
 					: '',
 			logoWidth: selectedCompany.fields.Logo ? selectedCompany.fields.Logo[0].width : '',
-			logoHeight: selectedCompany.fields.Logo ? selectedCompany.fields.Logo[0].height : ''
+			logoHeight: selectedCompany.fields.Logo ? selectedCompany.fields.Logo[0].height : '',
+			biography: ''
 		},
 		...positionRecords
 			.map((record) => record._rawJson)
@@ -134,6 +143,16 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					location: position.fields.locationText || '',
 					biography: position.fields['Biography (from Person)']
 						? position.fields['Biography (from Person)'][0]
+						: '',
+					department: position.fields['departmentText'] || '',
+					ethnicity: position.fields['ethnicityText'] || '',
+					// it gets really bad below here, this checks for existence of gender, if it exists and is blank then returns 'Unknown', if it's the id of Male in DIR_Gender table it returns 'Male', else it's 'Female'
+					gender: position.fields['Gender (from Person)']
+						? position.fields['Gender (from Person)'][0] === ''
+							? 'Unknown'
+							: position.fields['Gender (from Person)'][0] === 'recMQ9KHAFCsRr9pB'
+								? 'Male'
+								: 'Female'
 						: ''
 				}
 			])
@@ -143,7 +162,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		user: locals.user,
 		title: (await selectedCompany.fields.Company) + ' | Distribution View' || title,
 		company: await selectedCompany.fields,
-		positions: await positions,
+		positions: positions,
 		moves: {
 			keyHires: moves.filter((move) => move.moveType === 'Hire' && move.isKeyMove) || undefined,
 			keyDepartures:

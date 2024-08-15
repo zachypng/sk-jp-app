@@ -4,10 +4,7 @@
 </script>
 
 <ModeWatcher />
-<!-- <div class="flex place-items-start justify-end">
-	<slot />
-	<Sidebar />
-</div> -->
+
 <div class="min-h-[calc(100vh - 4rem)] flex flex-col">
 	<slot />
 	<div

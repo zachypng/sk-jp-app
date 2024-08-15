@@ -1,5 +1,3 @@
-// export const csr = true;
-
 import { AIRTABLE_PAT } from '$env/static/private';
 import { EasyAirtableTable } from 'easy-airtable';
 import { differenceInYears, differenceInMonths } from 'date-fns';
@@ -14,10 +12,10 @@ const getMonthYear = (date: string) => {
 const getTenure = (startDate: string, endDate: string) => {
 	const start = new Date(startDate);
 	const end = new Date(endDate);
-	if (differenceInYears(new Date(end), new Date(start)) < 2) {
-		return differenceInMonths(new Date(end), new Date(start)) + ' months';
+	if (differenceInYears(end, start) < 2) {
+		return differenceInMonths(end, start) + ' months';
 	} else {
-		return differenceInYears(new Date(end), new Date(start)) + ' years';
+		return differenceInYears(end, start) + ' years';
 	}
 };
 
@@ -54,7 +52,6 @@ export const load: PageServerLoad = async ({ params, locals, fetch }) => {
 	const positionTable = EasyAirtableTable.fromConfig(tableList.Position);
 	const positionRecords = await positionTable.findAll({
 		view: params.id,
-		// filterByFormula: `{fldCzVCsDhFSzifet}=''` //END DATE IS EMPTY
 		filterByFormula: `{End Date}=''`,
 		fields: [
 			'position_id',
@@ -66,7 +63,8 @@ export const load: PageServerLoad = async ({ params, locals, fetch }) => {
 			'locationText',
 			'Biography (from Person)',
 			'departmentText',
-			'Gender (from Person)'
+			'Gender (from Person)',
+			'ethnicityText'
 		]
 	});
 
@@ -78,8 +76,8 @@ export const load: PageServerLoad = async ({ params, locals, fetch }) => {
 
 	const movesTable = EasyAirtableTable.fromConfig(tableList.Moves);
 	const movesRecords = await movesTable.findAll({
-		filterByFormula: `AND(OR({Company (from Previous Position)}='${selectedCompany.fields.Company}', {Company (from New Position)}='${selectedCompany.fields.Company}'), {fldWcDuquxc0jf9vS}='External')`,
-		sort: [{ field: 'fld2STUK7uTIu1SlB', direction: 'desc' }]
+		filterByFormula: `AND(OR({Company (from Previous Position)}='${selectedCompany.fields.Company}', {Company (from New Position)}='${selectedCompany.fields.Company}'), {fldWcDuquxc0jf9vS}='External')`, // Move Type
+		sort: [{ field: 'fld2STUK7uTIu1SlB', direction: 'desc' }] // Start Date (from New Position)
 	});
 
 	const moves = movesRecords
@@ -153,6 +151,7 @@ export const load: PageServerLoad = async ({ params, locals, fetch }) => {
 						? position.fields['Biography (from Person)'][0]
 						: '',
 					department: position.fields['departmentText'] || '',
+					ethnicity: position.fields['ethnicityText'] || '',
 					// it gets really bad below here, this checks for existence of gender, if it exists and is blank then returns 'Unknown', if it's the id of Male in DIR_Gender table it returns 'Male', else it's 'Female'
 					gender: position.fields['Gender (from Person)']
 						? position.fields['Gender (from Person)'][0] === ''

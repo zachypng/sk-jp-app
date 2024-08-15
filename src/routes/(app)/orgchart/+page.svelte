@@ -3,7 +3,7 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import CompanyTable from '$lib/components/companyTable/data-table.svelte';
 	import ViewTable from '$lib/components/viewTable/data-table.svelte';
-	import { orgchartConfig } from '$lib/utils';
+	import { orgchartConfig } from '$lib/config';
 
 	export let data;
 </script>
