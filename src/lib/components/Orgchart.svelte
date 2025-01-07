@@ -295,7 +295,9 @@
 												new go.TextBlock({
 													editable: true,
 													minSize: new go.Size(10, 14),
-													textAlign: 'center'
+													maxSize: new go.Size(200, 42),
+													textAlign: 'center',
+													maxLines: 2
 												})
 													.bindTwoWay('text', 'name')
 													.theme('stroke', 'text')
