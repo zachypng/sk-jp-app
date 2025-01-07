@@ -295,7 +295,7 @@
 												new go.TextBlock({
 													editable: true,
 													minSize: new go.Size(10, 14),
-													maxSize: new go.Size(240),
+													maxSize: new go.Size(200, 42),
 													textAlign: 'center',
 													maxLines: 2
 												})
