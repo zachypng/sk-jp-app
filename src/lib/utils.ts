@@ -76,17 +76,17 @@ export function generateFormURL(form: keyof InputConfig, user: User) {
 
 export function paragraphify(move: ATMove) {
 	if (move.moveType === 'Hire') {
-		return `${move.personName} joined ${move.newCompany} in ${move.newStartDate} as ${
+		return `<span class="font-bold">${move.personName}</span> joined <span class="underline">${move.newCompany}</span> in ${move.newStartDate} as ${
 			move.newConcatTitle
-		}. ${move.pronoun} joined from ${
+		}. ${move.pronoun} joined from <span class="underline">${
 			move.prevCompany
-		} where ${move.pronoun?.toLowerCase()} worked as ${
+		}</span> where ${move.pronoun?.toLowerCase()} worked as ${
 			move.isKeyMove ? move.prevConcatTitle : move.prevCorporateTitle
 		} for ${move.prevTenure}.`;
 	} else if (move.moveType === 'Departure') {
-		return `${move.personName}, ${move.prevConcatTitle}, departed from ${move.prevCompany} in ${
+		return `<span class="font-bold">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span class="underline'>${move.prevCompany}</span> in ${
 			move.prevEndDate
-		}. ${move.pronoun} joins ${move.newCompany} as ${
+		}. ${move.pronoun} joins <span class="underline">${move.newCompany}</span> as ${
 			move.isKeyMove ? move.newConcatTitle : move.newCorporateTitle
 		}.`;
 	} else {
