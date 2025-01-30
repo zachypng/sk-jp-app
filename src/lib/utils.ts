@@ -84,7 +84,7 @@ export function paragraphify(move: ATMove) {
 			move.isKeyMove ? move.prevConcatTitle : move.prevCorporateTitle
 		} for ${move.prevTenure}.`;
 	} else if (move.moveType === 'Departure') {
-		return `<span class="font-bold">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span class="underline'>${move.prevCompany}</span> in ${
+		return `<span class="font-bold">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span class="underline">${move.prevCompany}</span> in ${
 			move.prevEndDate
 		}. ${move.pronoun} joins <span class="underline">${move.newCompany}</span> as ${
 			move.isKeyMove ? move.newConcatTitle : move.newCorporateTitle

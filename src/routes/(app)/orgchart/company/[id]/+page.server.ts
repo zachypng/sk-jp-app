@@ -67,7 +67,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const movesTable = EasyAirtableTable.fromConfig(tableList.Moves);
 	const movesRecords = await movesTable.findAll({
-		filterByFormula: `AND(OR({Company (from Previous Position)}='${selectedCompany.fields.Company}', {Company (from New Position)}='${selectedCompany.fields.Company}'), {fldWcDuquxc0jf9vS}='External')`, // Move Type
+		filterByFormula: `AND(OR({Company (from Previous Position)}='${selectedCompany.fields.Company}', {Company (from New Position)}='${selectedCompany.fields.Company}'), {fldWcDuquxc0jf9vS}='External', OR({newLabelTag}='Distribution', {newLabelTag}='C-Suite', AND(OR({prevLabelTag}='Distribution', {prevLabelTag}='C-Suite'), {Company (from Previous Position)}='${selectedCompany.fields.Company}')))`, // Move Type = 'External'
 		sort: [{ field: 'fld2STUK7uTIu1SlB', direction: 'desc' }] // Start Date (from New Position)
 	});
 
