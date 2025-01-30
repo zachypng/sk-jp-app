@@ -3,13 +3,14 @@
 	import * as Form from '$lib/components/ui/form';
 	import * as Select from '$lib/components/ui/select';
 	import { Loader2 } from 'lucide-svelte';
-	import { nameForm, names, type NameForm } from './schemas';
+	import { nameForm, type NameForm } from './schemas';
 	import SuperDebug, { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
 	import { page } from '$app/stores';
 
 	export let data: SuperValidated<Infer<NameForm>>;
+	export let namesList: string[];
 
 	const form = superForm(data, {
 		validators: zodClient(nameForm),
@@ -47,7 +48,7 @@
 					/>
 				</Select.Trigger>
 				<Select.Content>
-					{#each names as name}
+					{#each namesList as name}
 						<Select.Item value={name} label={name} />
 					{/each}
 				</Select.Content>

@@ -6,14 +6,30 @@ import { eq } from 'drizzle-orm';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { nameForm } from './schemas';
 import { zod } from 'sveltekit-superforms/adapters';
+import { EasyAirtableTable } from 'easy-airtable';
+import { AIRTABLE_PAT } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (!locals.user) redirect(302, '/login');
 	const title = 'User Settings';
 
+	const airtableConfig = {
+		apiKey: AIRTABLE_PAT,
+		baseId: 'app6rqTtoNCCajSS1',
+		tableId: 'tble09CzL5BM9QBEl' // JENSEN ANALYSTS
+	};
+
+	const namesTable = await EasyAirtableTable.fromConfig(airtableConfig).findAll({
+		view: 'viwxCDxTdtXuvuXuX', // CURRENT
+		fields: ['Name']
+	});
+
+	const names = namesTable.map((record) => record._rawJson).flatMap((r) => r.fields.Name);
+
 	return {
 		user: locals.user,
 		title,
+		names,
 		form: await superValidate(zod(nameForm))
 	};
 };

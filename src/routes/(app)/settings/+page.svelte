@@ -34,7 +34,7 @@
 					>
 				</Card.Header>
 				<Card.Content>
-					<NameForm data={data.form} />
+					<NameForm data={data.form} namesList={data.names} />
 				</Card.Content>
 			</Card.Root>
 		</div>
