@@ -27,7 +27,7 @@
 				<div class="mr-4 h-full">
 					<Flag class="h-6 w-6" />
 				</div>
-				<p class="text-xs">{paragraphify(keyHire)}</p>
+				<p class="text-xs">{@html paragraphify(keyHire)}</p>
 			</div>
 		{/each}
 	{/if}
@@ -38,7 +38,7 @@
 				<div class="mr-4 h-full">
 					<FlagOff class="h-6 w-6" />
 				</div>
-				<p class="text-xs">{paragraphify(keyDeparture)}</p>
+				<p class="text-xs">{@html paragraphify(keyDeparture)}</p>
 			</div>
 		{/each}
 	{/if}
@@ -50,14 +50,14 @@
 					<div class="mr-4 h-full">
 						<PlusCircle class="h-6 w-6" />
 					</div>
-					<p class="text-xs">{paragraphify(move)}</p>
+					<p class="text-xs">{@html paragraphify(move)}</p>
 				</div>
 			{:else if move.moveType === 'Departure' && paragraphify(move) !== 'hidden'}
 				<div class="flex items-center py-2">
 					<div class="mr-4 h-full">
 						<MinusCircle class="h-6 w-6" />
 					</div>
-					<p class="text-xs">{paragraphify(move)}</p>
+					<p class="text-xs">{@html paragraphify(move)}</p>
 				</div>
 			{:else}
 				<div class="hidden items-center py-2"></div>
