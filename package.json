@@ -45,7 +45,7 @@
 	"type": "module",
 	"dependencies": {
 		"@internationalized/date": "^3.5.5",
-		"@libsql/client": "^0.7.0",
+		"@libsql/client": "^0.15.2",
 		"@lucia-auth/adapter-drizzle": "^1.1.0",
 		"arctic": "^1.9.2",
 		"bits-ui": "^0.21.12",
