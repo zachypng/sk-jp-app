@@ -75,6 +75,6 @@
 		"@libsql/hrana-client": "^0.8.0"
 	},
 	"patchedDependencies": {
-		"arctic": "patches/arctic@1.9.2.patch"
+		"arctic@1.9.2": "patches/arctic@1.9.2.patch"
 	}
 }
