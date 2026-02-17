@@ -1,31 +1,110 @@
 diff --git a/dist/index.d.ts b/dist/index.d.ts
-index 7d52e2dcb98a781bebf8dc99ba0410f52e5d748c..b195526eb9c6135aa240a43e2999327e347bb391 100644
+old mode 100644
+new mode 100755
+index 7d52e2dcb98a781bebf8dc99ba0410f52e5d748c..07fa7e974a7e15f99996c2e123f59070ac3a1e06
 --- a/dist/index.d.ts
 +++ b/dist/index.d.ts
-@@ -1,3 +1,4 @@
+@@ -1,9 +1,9 @@
 +export { Airtable } from "./providers/airtable.js";
  export { AmazonCognito } from "./providers/amazon-cognito.js";
  export { AniList } from "./providers/anilist.js";
  export { Apple } from "./providers/apple.js";
-@@ -45,6 +46,7 @@ export { Yahoo } from "./providers/yahoo.js";
+ export { Atlassian } from "./providers/atlassian.js";
+ export { Auth0 } from "./providers/auth0.js";
+-export { Authentik } from "./providers/authentik.js";
+ export { Bitbucket } from "./providers/bitbucket.js";
+ export { Box } from "./providers/box.js";
+ export { Coinbase } from "./providers/coinbase.js";
+@@ -31,11 +31,9 @@ export { Patreon } from "./providers/patreon.js";
+ export { Reddit } from "./providers/reddit.js";
+ export { Roblox } from "./providers/roblox.js";
+ export { Salesforce } from "./providers/salesforce.js";
+-export { Shikimori } from "./providers/shikimori.js";
+ export { Slack } from "./providers/slack.js";
+ export { Spotify } from "./providers/spotify.js";
+ export { Strava } from "./providers/strava.js";
+-export { Tiltify } from "./providers/tiltify.js";
+ export { Tumblr } from "./providers/tumblr.js";
+ export { Twitch } from "./providers/twitch.js";
+ export { Twitter } from "./providers/twitter.js";
+@@ -44,13 +42,12 @@ export { WorkOS } from "./providers/workos.js";
+ export { Yahoo } from "./providers/yahoo.js";
  export { Yandex } from "./providers/yandex.js";
  export { Zoom } from "./providers/zoom.js";
- export { FortyTwo } from "./providers/42.js";
-+export type { AirtableTokens, AirtableRefreshedTokens } from "./providers/airtable.js";
+-export { FortyTwo } from "./providers/42.js";
++export type { AirtableTokens } from "./providers/airtable.js";
  export type { AmazonCognitoRefreshedTokens, AmazonCognitoTokens } from "./providers/amazon-cognito.js";
  export type { AniListTokens } from "./providers/anilist.js";
  export type { AppleCredentials, AppleRefreshedTokens, AppleTokens } from "./providers/apple.js";
+ export type { AtlassianTokens } from "./providers/atlassian.js";
+ export type { Auth0Tokens } from "./providers/auth0.js";
+-export type { AuthentikTokens } from "./providers/authentik.js";
+ export type { BitbucketTokens } from "./providers/bitbucket.js";
+ export type { BoxTokens } from "./providers/box.js";
+ export type { CoinbaseTokens } from "./providers/coinbase.js";
+@@ -78,11 +75,9 @@ export type { PatreonTokens } from "./providers/patreon.js";
+ export type { RedditTokens } from "./providers/reddit.js";
+ export type { RobloxTokens } from "./providers/roblox.js";
+ export type { SalesforceTokens } from "./providers/salesforce.js";
+-export type { ShikimoriTokens } from "./providers/shikimori.js";
+ export type { SlackTokens } from "./providers/slack.js";
+ export type { SpotifyTokens } from "./providers/spotify.js";
+ export type { StravaTokens } from "./providers/strava.js";
+-export type { TiltifyTokens } from "./providers/tiltify.js";
+ export type { TumblrTokens } from "./providers/tumblr.js";
+ export type { TwitchTokens } from "./providers/twitch.js";
+ export type { TwitterTokens } from "./providers/twitter.js";
+@@ -91,7 +86,6 @@ export type { WorkOSTokens } from "./providers/workos.js";
+ export type { YahooTokens } from "./providers/yahoo.js";
+ export type { YandexTokens } from "./providers/yandex.js";
+ export type { ZoomTokens } from "./providers/zoom.js";
+-export type { FortyTwoTokens } from "./providers/42.js";
+ export { generateCodeVerifier, generateState, OAuth2RequestError } from "oslo/oauth2";
+ export interface OAuth2Provider {
+     createAuthorizationURL(state: string): Promise<URL>;
 diff --git a/dist/index.js b/dist/index.js
-index 2ba766ca52c3dbe94c3ecd1130745d1e9bcbcdcb..6b54e1ef1eebf0185517802af3c867fb741dd419 100644
+old mode 100644
+new mode 100755
+index 2ba766ca52c3dbe94c3ecd1130745d1e9bcbcdcb..8c3436a1bd2f68d5464e74001044a05a9af77b44
 --- a/dist/index.js
 +++ b/dist/index.js
-@@ -1,3 +1,4 @@
+@@ -1,9 +1,9 @@
 +export { Airtable } from "./providers/airtable.js";
  export { AmazonCognito } from "./providers/amazon-cognito.js";
  export { AniList } from "./providers/anilist.js";
  export { Apple } from "./providers/apple.js";
-diff --git a/dist/providers/airtable.d.ts b/dist/providers/airtable.d.ts
-new file mode 100644
+ export { Atlassian } from "./providers/atlassian.js";
+ export { Auth0 } from "./providers/auth0.js";
+-export { Authentik } from "./providers/authentik.js";
+ export { Bitbucket } from "./providers/bitbucket.js";
+ export { Box } from "./providers/box.js";
+ export { Coinbase } from "./providers/coinbase.js";
+@@ -31,11 +31,9 @@ export { Patreon } from "./providers/patreon.js";
+ export { Reddit } from "./providers/reddit.js";
+ export { Roblox } from "./providers/roblox.js";
+ export { Salesforce } from "./providers/salesforce.js";
+-export { Shikimori } from "./providers/shikimori.js";
+ export { Slack } from "./providers/slack.js";
+ export { Spotify } from "./providers/spotify.js";
+ export { Strava } from "./providers/strava.js";
+-export { Tiltify } from "./providers/tiltify.js";
+ export { Tumblr } from "./providers/tumblr.js";
+ export { Twitch } from "./providers/twitch.js";
+ export { Twitter } from "./providers/twitter.js";
+@@ -44,5 +42,4 @@ export { WorkOS } from "./providers/workos.js";
+ export { Yahoo } from "./providers/yahoo.js";
+ export { Yandex } from "./providers/yandex.js";
+ export { Zoom } from "./providers/zoom.js";
+-export { FortyTwo } from "./providers/42.js";
+ export { generateCodeVerifier, generateState, OAuth2RequestError } from "oslo/oauth2";
+diff --git a/dist/providers/42.d.ts b/home/zzz/.bun/install/cache/arctic@1.9.2@@@1/dist/providers/42.d.ts
+deleted file mode 100644
+index 9bfaa48f8b7fda28198501c3402b78073e2300e1..0000000000000000000000000000000000000000
+diff --git a/dist/providers/42.js b/home/zzz/.bun/install/cache/arctic@1.9.2@@@1/dist/providers/42.js
+deleted file mode 100644
+index 864f75f6f29feb5a34c47f58d732bc05899fa3f9..0000000000000000000000000000000000000000
+diff --git a/node_modules/arctic/dist/providers/airtable.d.ts b/dist/providers/airtable.d.ts
+new file mode 100755
 index 0000000000000000000000000000000000000000..b00372a3a55340a92d198230a261ef7180027bdd
 --- /dev/null
 +++ b/dist/providers/airtable.d.ts
@@ -50,55 +129,607 @@ index 0000000000000000000000000000000000000000..b00372a3a55340a92d198230a261ef71
 +    accessToken: string;
 +    accessTokenExpiresAt: Date;
 +}
-diff --git a/dist/providers/airtable.js b/dist/providers/airtable.js
-new file mode 100644
-index 0000000000000000000000000000000000000000..e3036db15272bd9407fe6e33edee265cf79ed71b
---- /dev/null
+diff --git a/dist/providers/authentik.js b/dist/providers/airtable.js
+old mode 100644
+new mode 100755
+similarity index 67%
+rename from dist/providers/authentik.js
+rename to dist/providers/airtable.js
+index 1faf316f5ce0a026c6ca85901ec6ec9988409941..e3036db15272bd9407fe6e33edee265cf79ed71b
+--- a/dist/providers/authentik.js
 +++ b/dist/providers/airtable.js
-@@ -0,0 +1,46 @@
-+import { OAuth2Client } from "oslo/oauth2";
-+import { TimeSpan, createDate } from "oslo";
+@@ -1,11 +1,11 @@
+ import { OAuth2Client } from "oslo/oauth2";
+ import { TimeSpan, createDate } from "oslo";
+-export class Authentik {
 +const authorizeEndpoint = "https://airtable.com/oauth2/v1/authorize";
 +const tokenEndpoint = "https://airtable.com/oauth2/v1/token";
 +export class Airtable {
-+    client;
-+    clientSecret;
+     client;
+     clientSecret;
+-    constructor(realmURL, clientId, clientSecret, redirectURI) {
+-        const authorizeEndpoint = realmURL + "/application/o/authorize/";
+-        const tokenEndpoint = realmURL + "/application/o/token/";
 +    constructor(clientId, clientSecret, redirectURI) {
-+        this.client = new OAuth2Client(clientId, authorizeEndpoint, tokenEndpoint, {
-+            redirectURI
-+        });
-+        this.clientSecret = clientSecret;
-+    }
-+    async createAuthorizationURL(state, codeVerifier, options) {
-+        const scopes = options?.scopes ?? [];
-+        return await this.client.createAuthorizationURL({
-+            state,
-+            codeVerifier,
+         this.client = new OAuth2Client(clientId, authorizeEndpoint, tokenEndpoint, {
+             redirectURI
+         });
+@@ -16,31 +16,30 @@ export class Authentik {
+         return await this.client.createAuthorizationURL({
+             state,
+             codeVerifier,
+-            scopes: [...scopes, "openid"]
 +            scopes: [...scopes, "user.email:read"]
-+        });
-+    }
-+    async validateAuthorizationCode(code, codeVerifier) {
-+        const result = await this.client.validateAuthorizationCode(code, {
+         });
+     }
+     async validateAuthorizationCode(code, codeVerifier) {
+         const result = await this.client.validateAuthorizationCode(code, {
+-            codeVerifier,
+-            credentials: this.clientSecret
 +            authenticateWith: "http_basic_auth",
 +            credentials: this.clientSecret,
 +            codeVerifier
-+        });
-+        const tokens = {
-+            accessToken: result.access_token,
+         });
+         const tokens = {
+             accessToken: result.access_token,
+-            accessTokenExpiresAt: createDate(new TimeSpan(result.expires_in, "s")),
+-            refreshToken: result.refresh_token ?? null,
+-            idToken: result.id_token
 +            refreshToken: result.refresh_token,
 +            accessTokenExpiresAt: createDate(new TimeSpan(result.expires_in, "s"))
-+        };
-+        return tokens;
-+    }
-+    async refreshAccessToken(refreshToken) {
-+        const result = await this.client.refreshAccessToken(refreshToken, {
+         };
+         return tokens;
+     }
+     async refreshAccessToken(refreshToken) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
 +            authenticateWith: "http_basic_auth",
-+            credentials: this.clientSecret
-+        });
-+        const tokens = {
-+            accessToken: result.access_token,
+             credentials: this.clientSecret
+         });
+         const tokens = {
+             accessToken: result.access_token,
+-            accessTokenExpiresAt: createDate(new TimeSpan(result.expires_in, "s")),
+-            refreshToken: result.refresh_token ?? null,
+-            idToken: result.id_token
 +            accessTokenExpiresAt: createDate(new TimeSpan(result.expires_in, "s"))
-+        };
-+        return tokens;
-+    }
-+}
+         };
+         return tokens;
+     }
+diff --git a/dist/providers/amazon-cognito.d.ts b/dist/providers/amazon-cognito.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/amazon-cognito.js b/dist/providers/amazon-cognito.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/anilist.d.ts b/dist/providers/anilist.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/anilist.js b/dist/providers/anilist.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/apple.d.ts b/dist/providers/apple.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/apple.js b/dist/providers/apple.js
+old mode 100644
+new mode 100755
+index d3e380daf4a429355ea578f59f3465b2c301000e..03d7ba1bdc64515e717fbafbb206a261bf11e1d4
+--- a/dist/providers/apple.js
++++ b/dist/providers/apple.js
+@@ -1,5 +1,5 @@
+ import { TimeSpan, createDate } from "oslo";
+-import { base64 } from "oslo/encoding";
++import { decodeBase64 } from "oslo/encoding";
+ import { createJWT } from "oslo/jwt";
+ import { OAuth2Client } from "oslo/oauth2";
+ const authorizeEndpoint = "https://appleid.apple.com/auth/authorize";
+@@ -61,12 +61,8 @@ export class Apple {
+     }
+ }
+ function parsePKCS8PEM(pkcs8) {
+-    return base64.decode(pkcs8
+-        .replace("-----BEGIN PRIVATE KEY-----", "")
+-        .replace("-----END PRIVATE KEY-----", "")
+-        .replaceAll("\r", "")
+-        .replaceAll("\n", "")
+-        .trim(), {
+-        strict: false
+-    });
++    return decodeBase64(pkcs8
++        .replace(/-----BEGIN PRIVATE KEY-----/, "")
++        .replace(/-----END PRIVATE KEY-----/, "")
++        .trim());
+ }
+diff --git a/dist/providers/atlassian.d.ts b/dist/providers/atlassian.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/atlassian.js b/dist/providers/atlassian.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/auth0.d.ts b/dist/providers/auth0.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/auth0.js b/dist/providers/auth0.js
+old mode 100644
+new mode 100755
+index d14dd9cb8dbb2e1de88a1820439fa218db99ceb1..caa221bd400267403b270c4c19da6a1404d39f6b
+--- a/dist/providers/auth0.js
++++ b/dist/providers/auth0.js
+@@ -21,6 +21,7 @@ export class Auth0 {
+     }
+     async validateAuthorizationCode(code) {
+         const result = await this.client.validateAuthorizationCode(code, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+@@ -32,6 +33,7 @@ export class Auth0 {
+     }
+     async refreshAccessToken(refreshToken) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+diff --git a/dist/providers/authentik.d.ts b/home/zzz/.bun/install/cache/arctic@1.9.2@@@1/dist/providers/authentik.d.ts
+deleted file mode 100644
+index c198d622d52f4f021d24ec05b1b7068f54fae899..0000000000000000000000000000000000000000
+diff --git a/dist/providers/bitbucket.d.ts b/dist/providers/bitbucket.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/bitbucket.js b/dist/providers/bitbucket.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/box.d.ts b/dist/providers/box.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/box.js b/dist/providers/box.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/coinbase.d.ts b/dist/providers/coinbase.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/coinbase.js b/dist/providers/coinbase.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/discord.d.ts b/dist/providers/discord.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/discord.js b/dist/providers/discord.js
+old mode 100644
+new mode 100755
+index 8645fa301aa068f4664278a95c97773d8027650f..4c968d144f3110fee3a2e36d6e6e617bcb6d20a4
+--- a/dist/providers/discord.js
++++ b/dist/providers/discord.js
+@@ -19,6 +19,7 @@ export class Discord {
+     }
+     async validateAuthorizationCode(code) {
+         const result = await this.client.validateAuthorizationCode(code, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+@@ -30,6 +31,7 @@ export class Discord {
+     }
+     async refreshAccessToken(refreshToken) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+diff --git a/dist/providers/dribbble.d.ts b/dist/providers/dribbble.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/dribbble.js b/dist/providers/dribbble.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/dropbox.d.ts b/dist/providers/dropbox.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/dropbox.js b/dist/providers/dropbox.js
+old mode 100644
+new mode 100755
+index 7716ec4fe5398d4632e2853969d7c6ae68f2bcb1..d467d88a15329a12ece722cc71f81ed9fbd0b71a
+--- a/dist/providers/dropbox.js
++++ b/dist/providers/dropbox.js
+@@ -20,6 +20,7 @@ export class Dropbox {
+     }
+     async validateAuthorizationCode(code) {
+         const result = await this.client.validateAuthorizationCode(code, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+@@ -32,6 +33,7 @@ export class Dropbox {
+     }
+     async refreshAccessToken(refreshToken) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+diff --git a/dist/providers/facebook.d.ts b/dist/providers/facebook.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/facebook.js b/dist/providers/facebook.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/figma.d.ts b/dist/providers/figma.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/figma.js b/dist/providers/figma.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/github.d.ts b/dist/providers/github.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/github.js b/dist/providers/github.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/gitlab.d.ts b/dist/providers/gitlab.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/gitlab.js b/dist/providers/gitlab.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/google.d.ts b/dist/providers/google.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/google.js b/dist/providers/google.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/intuit.d.ts b/dist/providers/intuit.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/intuit.js b/dist/providers/intuit.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/kakao.d.ts b/dist/providers/kakao.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/kakao.js b/dist/providers/kakao.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/keycloak.d.ts b/dist/providers/keycloak.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/keycloak.js b/dist/providers/keycloak.js
+old mode 100644
+new mode 100755
+index 41f0769a81c5cc18a2f8ef81a10d5645cbbdec65..39a2295267c27a9543220bf8b346a224a6b4f40b
+--- a/dist/providers/keycloak.js
++++ b/dist/providers/keycloak.js
+@@ -24,6 +24,7 @@ export class Keycloak {
+     async validateAuthorizationCode(code, codeVerifier) {
+         const result = await this.client.validateAuthorizationCode(code, {
+             codeVerifier,
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+@@ -37,6 +38,7 @@ export class Keycloak {
+     }
+     async refreshAccessToken(refreshToken) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+diff --git a/dist/providers/lichess.d.ts b/dist/providers/lichess.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/lichess.js b/dist/providers/lichess.js
+old mode 100644
+new mode 100755
+index 099fbbe16c18a12a29683d007e19050d07262161..7f7d168b14629261d25d3362f4218072784bdd02
+--- a/dist/providers/lichess.js
++++ b/dist/providers/lichess.js
+@@ -17,6 +17,7 @@ export class Lichess {
+     }
+     async validateAuthorizationCode(code, codeVerifier) {
+         const result = await this.client.validateAuthorizationCode(code, {
++            authenticateWith: "request_body",
+             codeVerifier
+         });
+         const tokens = {
+diff --git a/dist/providers/line.d.ts b/dist/providers/line.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/line.js b/dist/providers/line.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/linear.d.ts b/dist/providers/linear.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/linear.js b/dist/providers/linear.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/linkedin.d.ts b/dist/providers/linkedin.d.ts
+old mode 100644
+new mode 100755
+index 171431377c6598a2d75c69fe1707d8bdbca47e83..0305511ea6df218297c782a8ffc6827687b857b8
+--- a/dist/providers/linkedin.d.ts
++++ b/dist/providers/linkedin.d.ts
+@@ -7,16 +7,9 @@ export declare class LinkedIn implements OAuth2Provider {
+         scopes?: string[];
+     }): Promise<URL>;
+     validateAuthorizationCode(code: string): Promise<LinkedInTokens>;
+-    refreshAccessToken(accessToken: string): Promise<LinkedInRefreshedTokens>;
++    refreshAccessToken(accessToken: string): Promise<LinkedInTokens>;
+ }
+ export interface LinkedInTokens {
+-    idToken: string;
+-    accessToken: string;
+-    accessTokenExpiresAt: Date;
+-    refreshToken: string | null;
+-    refreshTokenExpiresAt: Date | null;
+-}
+-export interface LinkedInRefreshedTokens {
+     accessToken: string;
+     accessTokenExpiresAt: Date;
+     refreshToken: string;
+diff --git a/dist/providers/linkedin.js b/dist/providers/linkedin.js
+old mode 100644
+new mode 100755
+index eae6ac3e77ede73101df2bf1532aee0a4d6ab3dc..c93dcbdeaaef940cecf44915963606d284f83a28
+--- a/dist/providers/linkedin.js
++++ b/dist/providers/linkedin.js
+@@ -24,13 +24,10 @@ export class LinkedIn {
+             credentials: this.clientSecret
+         });
+         const tokens = {
+-            idToken: result.id_token,
+             accessToken: result.access_token,
+             accessTokenExpiresAt: createDate(new TimeSpan(result.expires_in, "s")),
+-            refreshToken: result.refresh_token ?? null,
+-            refreshTokenExpiresAt: result.refresh_token_expires_in
+-                ? createDate(new TimeSpan(result.refresh_token_expires_in, "s"))
+-                : null
++            refreshToken: result.refresh_token,
++            refreshTokenExpiresAt: createDate(new TimeSpan(result.refresh_token_expires_in, "s"))
+         };
+         return tokens;
+     }
+diff --git a/dist/providers/microsoft-entra-id.d.ts b/dist/providers/microsoft-entra-id.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/microsoft-entra-id.js b/dist/providers/microsoft-entra-id.js
+old mode 100644
+new mode 100755
+index 1b0bcbce40ce415db4f0a6a49f6d72724f15e693..b2cf8aa03d21d9b850de6779fcd0af4bed7a9559
+--- a/dist/providers/microsoft-entra-id.js
++++ b/dist/providers/microsoft-entra-id.js
+@@ -23,6 +23,7 @@ export class MicrosoftEntraId {
+     }
+     async validateAuthorizationCode(code, codeVerifier) {
+         const result = await this.client.validateAuthorizationCode(code, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret,
+             codeVerifier
+         });
+@@ -36,6 +37,7 @@ export class MicrosoftEntraId {
+     }
+     async refreshAccessToken(refreshToken) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+diff --git a/dist/providers/myanimelist.d.ts b/dist/providers/myanimelist.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/myanimelist.js b/dist/providers/myanimelist.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/notion.d.ts b/dist/providers/notion.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/notion.js b/dist/providers/notion.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/okta.d.ts b/dist/providers/okta.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/okta.js b/dist/providers/okta.js
+old mode 100644
+new mode 100755
+index 86a554b366c553f33d92055d2debd35a0da6e337..605144d923c4813837fcef6b2930b67c6e9e8c92
+--- a/dist/providers/okta.js
++++ b/dist/providers/okta.js
+@@ -29,9 +29,9 @@ export class Okta {
+     }
+     async validateAuthorizationCode(code, codeVerifier) {
+         const result = await this.client.validateAuthorizationCode(code, {
++            authenticateWith: "request_body",
+             codeVerifier,
+-            credentials: this.clientSecret,
+-            authenticateWith: "request_body"
++            credentials: this.clientSecret
+         });
+         const tokens = {
+             accessToken: result.access_token,
+@@ -44,8 +44,8 @@ export class Okta {
+     }
+     async refreshAccessToken(refreshToken, options) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
+-            credentials: this.clientSecret,
+             authenticateWith: "request_body",
++            credentials: this.clientSecret,
+             scopes: options?.scopes ?? []
+         });
+         const tokens = {
+diff --git a/dist/providers/osu.d.ts b/dist/providers/osu.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/osu.js b/dist/providers/osu.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/patreon.d.ts b/dist/providers/patreon.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/patreon.js b/dist/providers/patreon.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/reddit.d.ts b/dist/providers/reddit.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/reddit.js b/dist/providers/reddit.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/roblox.d.ts b/dist/providers/roblox.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/roblox.js b/dist/providers/roblox.js
+old mode 100644
+new mode 100755
+index 52ba8f6e8ec9d502d567243616dbc6e67b45f5bf..22c68292ac6b96d45c3b43c201b79ed647c26975
+--- a/dist/providers/roblox.js
++++ b/dist/providers/roblox.js
+@@ -22,8 +22,7 @@ export class Roblox {
+     async validateAuthorizationCode(code, codeVerifier) {
+         const result = await this.client.validateAuthorizationCode(code, {
+             credentials: this.clientSecret,
+-            codeVerifier,
+-            authenticateWith: "request_body" // Roblox doesn't support HTTP basic auth
++            codeVerifier
+         });
+         const tokens = {
+             accessToken: result.access_token,
+diff --git a/dist/providers/salesforce.d.ts b/dist/providers/salesforce.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/salesforce.js b/dist/providers/salesforce.js
+old mode 100644
+new mode 100755
+index b1d96bedfdf78af66ed2765aac72f741ac5142d3..61a52ea303ad1e94a5fb5b4ce9fafe927050ea69
+--- a/dist/providers/salesforce.js
++++ b/dist/providers/salesforce.js
+@@ -30,6 +30,7 @@ export class Salesforce {
+     }
+     async refreshAccessToken(refreshToken) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         return {
+diff --git a/dist/providers/shikimori.d.ts b/home/zzz/.bun/install/cache/arctic@1.9.2@@@1/dist/providers/shikimori.d.ts
+deleted file mode 100644
+index 83e1173440657f271ef4732cdee1cffed1a7a485..0000000000000000000000000000000000000000
+diff --git a/dist/providers/shikimori.js b/home/zzz/.bun/install/cache/arctic@1.9.2@@@1/dist/providers/shikimori.js
+deleted file mode 100644
+index b3e4d419f5b6bdc414f791baaf1d50cb7d5bbe85..0000000000000000000000000000000000000000
+diff --git a/dist/providers/slack.d.ts b/dist/providers/slack.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/slack.js b/dist/providers/slack.js
+old mode 100644
+new mode 100755
+index eea7a902ac0bb4c44fea33958e9e352cb295540b..e0b20c7e3a5e970b5458f246e099329740151357
+--- a/dist/providers/slack.js
++++ b/dist/providers/slack.js
+@@ -19,8 +19,8 @@ export class Slack {
+     }
+     async validateAuthorizationCode(code) {
+         const result = await this.client.validateAuthorizationCode(code, {
+-            credentials: this.clientSecret,
+-            authenticateWith: "request_body"
++            authenticateWith: "request_body",
++            credentials: this.clientSecret
+         });
+         const tokens = {
+             accessToken: result.access_token,
+diff --git a/dist/providers/spotify.d.ts b/dist/providers/spotify.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/spotify.js b/dist/providers/spotify.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/strava.d.ts b/dist/providers/strava.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/strava.js b/dist/providers/strava.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/tiltify.d.ts b/home/zzz/.bun/install/cache/arctic@1.9.2@@@1/dist/providers/tiltify.d.ts
+deleted file mode 100644
+index c7b1e0c9556955ed4066416097aca65834d1a2d5..0000000000000000000000000000000000000000
+diff --git a/dist/providers/tiltify.js b/home/zzz/.bun/install/cache/arctic@1.9.2@@@1/dist/providers/tiltify.js
+deleted file mode 100644
+index c1a791bb23c8f208016203e0be8a17ab439a7934..0000000000000000000000000000000000000000
+diff --git a/dist/providers/tumblr.d.ts b/dist/providers/tumblr.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/tumblr.js b/dist/providers/tumblr.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/twitch.d.ts b/dist/providers/twitch.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/twitch.js b/dist/providers/twitch.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/twitter.d.ts b/dist/providers/twitter.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/twitter.js b/dist/providers/twitter.js
+old mode 100644
+new mode 100755
+index 58c098100c37699758ef295a4a76a0a7ec4fc640..444d94dd4653bc42efb831f77085937bd8f9f000
+--- a/dist/providers/twitter.js
++++ b/dist/providers/twitter.js
+@@ -30,6 +30,7 @@ export class Twitter {
+     }
+     async refreshAccessToken(refreshToken) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+diff --git a/dist/providers/vk.d.ts b/dist/providers/vk.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/vk.js b/dist/providers/vk.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/workos.d.ts b/dist/providers/workos.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/workos.js b/dist/providers/workos.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/yahoo.d.ts b/dist/providers/yahoo.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/yahoo.js b/dist/providers/yahoo.js
+old mode 100644
+new mode 100755
+index df02a5aca7b8e28983f8d3ab9ca9fb418de8f1ef..a59f674abd8576813965e40d325eb19116762b6b
+--- a/dist/providers/yahoo.js
++++ b/dist/providers/yahoo.js
+@@ -20,6 +20,7 @@ export class Yahoo {
+     }
+     async validateAuthorizationCode(code) {
+         const result = await this.client.validateAuthorizationCode(code, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+@@ -32,6 +33,7 @@ export class Yahoo {
+     }
+     async refreshAccessToken(refreshToken) {
+         const result = await this.client.refreshAccessToken(refreshToken, {
++            authenticateWith: "request_body",
+             credentials: this.clientSecret
+         });
+         const tokens = {
+diff --git a/dist/providers/yandex.d.ts b/dist/providers/yandex.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/yandex.js b/dist/providers/yandex.js
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/zoom.d.ts b/dist/providers/zoom.d.ts
+old mode 100644
+new mode 100755
+diff --git a/dist/providers/zoom.js b/dist/providers/zoom.js
+old mode 100644
+new mode 100755

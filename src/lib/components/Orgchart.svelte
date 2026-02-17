@@ -5,7 +5,15 @@
 	import * as Command from '$lib/components/ui/command/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import * as go from 'gojs';
-	import { AlertCircle, Check, ChevronsUpDown, Search } from 'lucide-svelte';
+	import {
+		AlertCircle,
+		Check,
+		ChevronsUpDown,
+		Minus,
+		Plus,
+		RefreshCw,
+		Search
+	} from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { enhance } from '$app/forms';
 	import { cn, slugify } from '$lib/utils';
@@ -77,7 +85,15 @@
 					alternateAngle: 90,
 					alternateLayerSpacing: 35,
 					alternateAlignment: go.TreeAlignment.Bus,
-					alternateNodeSpacing: 20
+					alternateNodeSpacing: 20,
+					sorting: go.TreeSorting.Ascending,
+					comparer: (a, b) => {
+						return (
+							a.node?.data.location?.localeCompare(b.node?.data.location) ||
+							a.node?.data.department?.localeCompare(b.node?.data.department) ||
+							a.node?.data.name?.localeCompare(b.node?.data.name)
+						);
+					}
 				}),
 				hasHorizontalScrollbar: false,
 				hasVerticalScrollbar: false,
@@ -296,7 +312,7 @@
 													editable: true,
 													minSize: new go.Size(10, 14),
 													maxSize: new go.Size(200, 42),
-													textAlign: 'center',
+													textAlign: 'left',
 													maxLines: 2
 												})
 													.bindTwoWay('text', 'name')
@@ -377,7 +393,7 @@
 			)
 			.theme('shadowColor', 'shadow')
 			// for sorting, have the Node.text be the data.name
-			.bind('text', 'name')
+			.bind('text', 'region')
 			// bind the Part.layerName to control the Node's layer depending on whether it isSelected
 			.bindObject('layerName', 'isSelected', (sel) => (sel ? 'Foreground' : ''))
 			.bindTwoWay('isTreeExpanded')
@@ -513,6 +529,22 @@
 
 		myDiagram.commitTransaction('highlight search');
 	}
+
+	function zoomIn() {
+		if (myDiagram.commandHandler.canIncreaseZoom()) {
+			myDiagram.commandHandler.increaseZoom(1.2);
+		}
+	}
+
+	function zoomOut() {
+		if (myDiagram.commandHandler.canDecreaseZoom()) {
+			myDiagram.commandHandler.decreaseZoom(0.8);
+		}
+	}
+
+	function resetZoom() {
+		myDiagram.commandHandler.resetZoom(0.6);
+	}
 </script>
 
 <form
@@ -613,8 +645,21 @@
 
 <div
 	bind:this={diagramDiv}
-	class="z-10 h-[calc(100vh-73px)] w-full max-w-[calc(100vw-9.45rem)] justify-center overflow-y-hidden"
+	class="z-10 -mt-20 h-[calc(100vh+7px)] w-full max-w-[calc(100vw-9.45rem)] justify-center overflow-y-hidden"
 />
+<div class="-mt-28 flex w-full basis-full flex-row-reverse px-4">
+	<div class="z-50 flex flex-col rounded-md bg-background text-muted-foreground shadow">
+		<Button variant="ghost" on:click={zoomIn} class="h-8 w-8 rounded-b-none rounded-t-md p-2"
+			><Plus class="h-4 w-4" /></Button
+		>
+		<Button variant="ghost" on:click={resetZoom} class="h-8 w-8 rounded-none p-2"
+			><RefreshCw class="h-4 w-4" /></Button
+		>
+		<Button variant="ghost" on:click={zoomOut} class="h-8 w-8 rounded-b-md rounded-t-none p-2"
+			><Minus class="h-4 w-4" /></Button
+		>
+	</div>
+</div>
 <div
 	class="absolute bottom-2 left-16 z-30 flex cursor-default rounded-md border bg-background text-sm text-muted-foreground shadow dark:text-muted-foreground"
 >

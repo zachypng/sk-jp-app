@@ -32,9 +32,9 @@
 								</div>
 								{#if $orgchartConfig.showInfo}
 									<div
-										class="max-h-[calc(100vh-73px)] w-full basis-1/3 overflow-y-scroll border-l"
+										class="max-h-[calc(100vh-73px)] w-full basis-1/4 overflow-y-scroll border-l bg-background"
 										in:fly={{ x: '80%', duration: 600 }}
-										out:fly={{ x: '80%', duration: 600 }}
+										out:fly={{ x: '80%', duration: 200 }}
 									>
 										<InfoTab moveData={data.moves} companyData={data.company} />
 									</div>

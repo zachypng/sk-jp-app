@@ -61,7 +61,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			'Biography (from Person)',
 			'departmentText',
 			'Gender (from Person)',
-			'ethnicityText'
+			'ethnicityText',
+			'region_squashed'
 		]
 	});
 
@@ -97,11 +98,11 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					: 'Unknown',
 				prevTenure:
 					move.fields['End Date (from Previous Position)'] &&
-					move.fields['Start Date (from Previous Position)']
+						move.fields['Start Date (from Previous Position)']
 						? getTenure(
-								move.fields['Start Date (from Previous Position)'][0],
-								move.fields['End Date (from Previous Position)'][0]
-							)
+							move.fields['Start Date (from Previous Position)'][0],
+							move.fields['End Date (from Previous Position)'][0]
+						)
 						: 'an unknown amount of time',
 				prevEndDate: move.fields['End Date (from Previous Position)']
 					? getMonthYear(move.fields['End Date (from Previous Position)'][0])
@@ -141,6 +142,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 						? position.fields['Photo (from Person)'][0].url
 						: '',
 					location: position.fields.locationText || '',
+					region: position.fields.region_squashed ? position.fields.region_squashed[0] : '',
 					biography: position.fields['Biography (from Person)']
 						? position.fields['Biography (from Person)'][0]
 						: '',

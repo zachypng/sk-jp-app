@@ -43,7 +43,7 @@
 	}}
 />
 
-<div class="flex h-full w-full flex-col space-y-2 overflow-scroll p-4">
+<div class="flex h-full w-full flex-col space-y-2 overflow-hidden p-4">
 	<Tooltip.Root>
 		<Tooltip.Trigger>
 			<Button

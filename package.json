@@ -47,7 +47,7 @@
 		"@internationalized/date": "^3.5.5",
 		"@libsql/client": "^0.15.9",
 		"@lucia-auth/adapter-drizzle": "^1.1.0",
-		"arctic": "^1.9.2",
+		"arctic": "1.9.2",
 		"bits-ui": "^0.21.12",
 		"clsx": "^2.1.1",
 		"cmdk-sv": "^0.0.18",
@@ -71,12 +71,10 @@
 		"vaul-svelte": "^0.3.2",
 		"zod": "^3.23.8"
 	},
-	"pnpm": {
-		"patchedDependencies": {
-			"arctic@1.9.2": "patches/arctic@1.9.2.patch"
-		},
-		"overrides": {
-			"@libsql/hrana-client": "^0.8.0"
-		}
+	"overrides": {
+		"@libsql/hrana-client": "^0.8.0"
+	},
+	"patchedDependencies": {
+		"arctic": "patches/arctic@1.9.2.patch"
 	}
 }
