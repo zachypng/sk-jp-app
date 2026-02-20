@@ -304,6 +304,18 @@
 								>
 							</div>
 							<div class="my-2">
+								<Label class="mt-4 text-lg" for="startDate">Start Date</Label>
+								<p class="my-1 text-sm text-muted-foreground">Input a default start date</p>
+								<Input
+									class="mt-2 max-w-md"
+									name="startDate"
+									type="date"
+									placeholder="Enter a start date to autofill..."
+									bind:value={$inputConfig.position.fields['Start Date']}
+									>{$inputConfig.position.fields['Start Date']}</Input
+								>
+							</div>
+							<div class="my-2">
 								<Label class="mt-4 text-lg" for="location">Location</Label>
 								<p class="my-1 text-sm text-muted-foreground">Choose a default location</p>
 								<Popover.Root bind:open let:ids>

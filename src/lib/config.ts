@@ -39,6 +39,7 @@ export interface InputConfig {
 			Location?: string;
 			'Senior / Junior'?: string;
 			Note?: string;
+			'Start Date'?: string;
 		};
 	};
 	move: {
