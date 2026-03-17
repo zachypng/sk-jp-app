@@ -62,7 +62,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			'departmentText',
 			'Gender (from Person)',
 			'ethnicityText',
-			'region_squashed'
+			'region_squashed',
+			'Rainmaker (from Person)'
 		]
 	});
 
@@ -146,6 +147,10 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					biography: position.fields['Biography (from Person)']
 						? position.fields['Biography (from Person)'][0]
 						: '',
+					rainmaker:
+						position.fields['Rainmaker (from Person)'] ?
+							position.fields['Rainmaker (from Person)'][0] === 'Yes' ? true : false
+							: false,
 					department: position.fields['departmentText'] || '',
 					ethnicity: position.fields['ethnicityText'] || '',
 					// it gets really bad below here, this checks for existence of gender, if it exists and is blank then returns 'Unknown', if it's the id of Male in DIR_Gender table it returns 'Male', else it's 'Female'

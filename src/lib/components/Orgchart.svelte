@@ -66,6 +66,13 @@
 		}
 		const $ = go.GraphObject.make; // for conciseness in defining templates
 
+		go.Shape.defineFigureGenerator('Star', function (shape, w, h) {
+			return go.Geometry.parse(
+				'M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z',
+				true
+			);
+		});
+
 		myDiagram = new go.Diagram(
 			diagramDiv, // must be the ID or reference to div
 			{
@@ -366,7 +373,25 @@
 											.theme('stroke', 'subtext')
 											.theme('font', 'normal')
 									)
-							)
+							),
+						$(
+							go.Shape,
+							'Star',
+							{
+								width: 24,
+								height: 24,
+								strokeWidth: 0.8,
+								alignment: go.Spot.TopRight, // Position in the top-right of the Auto panel
+								margin: 4, // Spacing from the edge
+								visible: true, // Default to invisible
+								scale: 1.2,
+								stroke: 'darkgoldenrod'
+							},
+							// Binding for visibility
+							new go.Binding('visible', 'rainmaker', function (rainmaker) {
+								return rainmaker === true;
+							})
+						).theme('fill', 'highlight')
 					), // end Auto Panel
 				new go.Shape('RoundedLeftRectangle', {
 					alignment: go.Spot.Left,
