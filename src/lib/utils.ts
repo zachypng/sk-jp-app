@@ -4,7 +4,7 @@ import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
 import { get } from 'svelte/store';
 import type { User } from 'lucia';
-import { inputConfig, type ATMove, type InputConfig } from './config';
+import { inputConfig, type ATMove, type ATPosition, type InputConfig } from './config';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -65,31 +65,30 @@ export function generateFormURL(form: keyof InputConfig, user: User) {
 		params.push(`${key}=${value}`);
 	});
 
-	const prefillURL = `${ref[form].url}?prefill_Jensen%20Analyst=${
-		user.name
-	}&prefill_${encodeURIComponent(params.join('&prefill_'))
-		.replace(RegExp('%3D', 'g'), '=')
-		.replace(RegExp('%26', 'g'), '&')}
+	const prefillURL = `${ref[form].url}?prefill_Jensen%20Analyst=${user.name
+		}&prefill_${encodeURIComponent(params.join('&prefill_'))
+			.replace(RegExp('%3D', 'g'), '=')
+			.replace(RegExp('%26', 'g'), '&')}
 	`;
 	return prefillURL;
 }
 
-export function paragraphify(move: ATMove) {
-	if (move.moveType === 'Hire') {
-		return `<span class="font-bold">${move.personName}</span> joined <span class="underline">${move.newCompany}</span> in ${move.newStartDate} as ${
-			move.newConcatTitle
-		}. ${move.pronoun} joined from <span class="underline">${
-			move.prevCompany
-		}</span> where ${move.pronoun?.toLowerCase()} worked as ${
-			move.isKeyMove ? move.prevConcatTitle : move.prevCorporateTitle
-		} for ${move.prevTenure}.`;
-	} else if (move.moveType === 'Departure') {
-		return `<span class="font-bold">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span class="underline">${move.prevCompany}</span> in ${
-			move.prevEndDate
-		}. ${move.pronoun} joins <span class="underline">${move.newCompany}</span> as ${
-			move.isKeyMove ? move.newConcatTitle : move.newCorporateTitle
-		}.`;
-	} else {
+export function paragraphify(move?: ATMove, position?: ATPosition) {
+	if (!move && !position) return 'hidden';
+	if (move?.moveType === 'Hire') {
+		return `<span class="font-bold">${move.personName}</span> joined <span class="underline">${move.newCompany}</span> in ${move.newStartDate} as ${move.newConcatTitle
+			}. ${move.pronoun} joined from <span class="underline">${move.prevCompany
+			}</span> where ${move.pronoun?.toLowerCase()} worked as ${move.isKeyMove ? move.prevConcatTitle : move.prevCorporateTitle
+			} for ${move.prevTenure}.`;
+	} else if (move?.moveType === 'Departure') {
+		return `<span class="font-bold">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span class="underline">${move.prevCompany}</span> in ${move.prevEndDate
+			}. ${move.pronoun} joins <span class="underline">${move.newCompany}</span> as ${move.isKeyMove ? move.newConcatTitle : move.newCorporateTitle
+			}.`;
+	}
+	else if (position?.moveType === 'Departure TBD') {
+		return `<span class="font-bold">${position.personName}</span> departed from <span class="underline">${position.company}</span> in ${position.endDate}.`
+	}
+	else {
 		return 'hidden';
 	}
 }

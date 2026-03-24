@@ -117,9 +117,25 @@ export type ATMove = {
 	prevCorporateTitle?: string;
 	prevTenure?: string;
 	prevEndDate?: string;
+	endDate?: string;
 	moveType?: string;
 	isKeyMove?: boolean;
 };
+
+export type ATPosition = {
+	id?: string;
+	personName?: string;
+	corporateTitle?: string;
+	gender?: string;
+	startDate?: string;
+	endDate?: string;
+	tenure?: string;
+	pronoun?: string;
+	moveType?: string;
+	company?: string;
+	prevStartDate?: string;
+	prevEndDate?: string;
+}
 
 export type ATCompany = {
 	'Firm Type'?: string[];

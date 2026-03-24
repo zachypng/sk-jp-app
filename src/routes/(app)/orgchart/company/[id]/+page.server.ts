@@ -5,8 +5,11 @@ import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
 const getMonthYear = (date: string) => {
-	const dateObj = new Date(date);
-	return `${dateObj.toLocaleString('default', { month: 'long' })} ${dateObj.getFullYear()}`;
+	const dateObj = new Date(date + 'T00:00:00');
+	return dateObj.toLocaleDateString('en-US', {
+		month: 'long',
+		year: 'numeric'
+	});
 };
 
 const getTenure = (startDate: string, endDate: string) => {
@@ -67,6 +70,56 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		]
 	});
 
+	const tbdRecords = await positionTable.findAll({
+		// view: 'viw3yw95f2rQUhQ6M', // Distribution View (All)
+		filterByFormula: `AND({company_id}='${params.id}', NOT({End Date}=''), {Move}=BLANK())`,
+		fields: [
+			'position_id',
+			'Company',
+			'person_name',
+			'Corporate Title',
+			'Gender (from Person)',
+			'Start Date',
+			'End Date'
+		]
+	});
+
+	const tbds = tbdRecords
+		.map((record) => record._rawJson)
+		.flatMap((position) => [
+			{
+				id: position.id,
+				personName: position.fields.person_name ? position.fields.person_name[0] : 'N/A',
+				company: selectedCompany.fields.Company || 'N/A',
+				corporateTitle: position.fields['Corporate Title']
+					? position.fields['Corporate Title']
+					: 'N/A',
+				gender: position.fields['Gender (from Person)']
+					? position.fields['Gender (from Person)'][0]
+					: 'N/A',
+				prevStartDate: position.fields['Start Date'] ? position.fields['Start Date'] : 'N/A',
+				startDate: position.fields['Start Date']
+					? getMonthYear(position.fields['Start Date'])
+					: 'N/A',
+				prevEndDateRaw: position.fields['End Date'] ? position.fields['End Date'] : 'N/A',
+				prevEndDate: position.fields['End Date'] ? position.fields['End Date'] : 'N/A',
+				newStartDateRaw: 'N/A',
+				endDate: position.fields['End Date'] ? getMonthYear(position.fields['End Date']) : 'N/A',
+				tenure:
+					position.fields['Start Date'] && position.fields['End Date']
+						? getTenure(position.fields['Start Date'], position.fields['End Date'])
+						: 'N/A',
+				pronoun: position.fields['Gender (from Person)']
+					? position.fields['Gender (from Person)'][0] === ''
+						? 'Unknown'
+						: position.fields['Gender (from Person)'][0] === 'recMQ9KHAFCsRr9pB'
+							? 'Male'
+							: 'Female'
+					: '',
+				moveType: 'Departure TBD'
+			}
+		]);
+
 	const movesTable = EasyAirtableTable.fromConfig(tableList.Moves);
 	const movesRecords = await movesTable.findAll({
 		filterByFormula: `AND(OR({Company (from Previous Position)}='${selectedCompany.fields.Company}', {Company (from New Position)}='${selectedCompany.fields.Company}'), {fldWcDuquxc0jf9vS}='External', OR({newLabelTag}='Distribution', {newLabelTag}='C-Suite', AND(OR({prevLabelTag}='Distribution', {prevLabelTag}='C-Suite'), {Company (from Previous Position)}='${selectedCompany.fields.Company}')))`, // Move Type = 'External'
@@ -79,6 +132,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			{
 				id: move.id,
 				personName: move.fields.personName || 'N/A',
+				newStartDateRaw: move.fields['Start Date (from New Position)']
+					? move.fields['Start Date (from New Position)'][0]
+					: 'N/A',
 				newStartDate: move.fields['Start Date (from New Position)']
 					? getMonthYear(move.fields['Start Date (from New Position)'][0])
 					: 'N/A',
@@ -99,14 +155,17 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					: 'Unknown',
 				prevTenure:
 					move.fields['End Date (from Previous Position)'] &&
-						move.fields['Start Date (from Previous Position)']
+					move.fields['Start Date (from Previous Position)']
 						? getTenure(
-							move.fields['Start Date (from Previous Position)'][0],
-							move.fields['End Date (from Previous Position)'][0]
-						)
+								move.fields['Start Date (from Previous Position)'][0],
+								move.fields['End Date (from Previous Position)'][0]
+							)
 						: 'an unknown amount of time',
-				prevEndDate: move.fields['End Date (from Previous Position)']
+				endDate: move.fields['End Date (from Previous Position)']
 					? getMonthYear(move.fields['End Date (from Previous Position)'][0])
+					: 'N/A',
+				prevEndDateRaw: move.fields['End Date (from Previous Position)']
+					? move.fields['End Date (from Previous Position)'][0]
 					: 'N/A',
 				moveType: move.fields['Company (from New Position)']
 					? move.fields['Company (from New Position)'][0] === params.id
@@ -147,10 +206,11 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					biography: position.fields['Biography (from Person)']
 						? position.fields['Biography (from Person)'][0]
 						: '',
-					rainmaker:
-						position.fields['Rainmaker (from Person)'] ?
-							position.fields['Rainmaker (from Person)'][0] === 'Yes' ? true : false
-							: false,
+					rainmaker: position.fields['Rainmaker (from Person)']
+						? position.fields['Rainmaker (from Person)'][0] === 'Yes'
+							? true
+							: false
+						: false,
 					department: position.fields['departmentText'] || '',
 					ethnicity: position.fields['ethnicityText'] || '',
 					// it gets really bad below here, this checks for existence of gender, if it exists and is blank then returns 'Unknown', if it's the id of Male in DIR_Gender table it returns 'Male', else it's 'Female'
@@ -165,17 +225,57 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			])
 	];
 
+	const isValidMove = (move: (typeof moves)[0]) => {
+		return (
+			move.personName !== 'N/A' &&
+			move.newCompany !== 'N/A' &&
+			move.prevCompany !== 'N/A' &&
+			move.newStartDateRaw !== 'N/A' &&
+			move.prevEndDateRaw !== 'N/A'
+		);
+	};
+
+	const isValidTbd = (tbd: (typeof tbds)[0]) => {
+		return tbd.personName !== 'N/A' && tbd.company !== 'N/A' && tbd.prevEndDateRaw !== 'N/A';
+	};
+
+	const filteredMoves = moves.filter((move) => !move.isKeyMove && isValidMove(move));
+	const filteredTbds = tbds.filter(isValidTbd);
+	const mergedMoves = [...filteredMoves, ...filteredTbds].sort((a, b) => {
+		const dateA = a.moveType === 'Hire' ? a.newStartDateRaw : a.prevEndDateRaw;
+		const dateB = b.moveType === 'Hire' ? b.newStartDateRaw : b.prevEndDateRaw;
+		return dateB.localeCompare(dateA);
+	});
+
 	return {
 		user: locals.user,
 		title: (await selectedCompany.fields.Company) + ' | Distribution View' || title,
 		company: await selectedCompany.fields,
 		positions: positions,
 		moves: {
-			keyHires: moves.filter((move) => move.moveType === 'Hire' && move.isKeyMove) || undefined,
+			keyHires:
+				moves
+					.filter((move) => {
+						const isKeyHire = move.moveType === 'Hire' && move.isKeyMove;
+						const isRecent =
+							move.newStartDateRaw !== 'N/A' &&
+							differenceInYears(new Date(), new Date(move.newStartDateRaw)) <= 5;
+						return isKeyHire && isRecent;
+					})
+					.sort((a, b) => b.newStartDateRaw.localeCompare(a.newStartDateRaw)) || undefined,
 			keyDepartures:
-				moves.filter((move) => move.moveType === 'Departure' && move.isKeyMove) || undefined,
-			general: moves.filter((move) => !move.isKeyMove) || undefined
-		}
+				moves
+					.filter((move) => {
+						const isKeyDeparture = move.moveType === 'Departure' && move.isKeyMove;
+						const isRecent =
+							move.prevEndDateRaw !== 'N/A' &&
+							differenceInYears(new Date(), new Date(move.prevEndDateRaw)) <= 5;
+						return isKeyDeparture && isRecent;
+					})
+					.sort((a, b) => b.prevEndDateRaw.localeCompare(a.prevEndDateRaw)) || undefined,
+			general: mergedMoves || undefined
+		},
+		tbds: filteredTbds.sort((a, b) => b.prevEndDateRaw.localeCompare(a.prevEndDateRaw)) || undefined
 	};
 };
 

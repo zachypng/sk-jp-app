@@ -1,13 +1,17 @@
 <script lang="ts">
 	import { paragraphify } from '$lib/utils';
 	import { Flag, FlagOff, MinusCircle, PlusCircle } from 'lucide-svelte';
-	import type { ATCompany, ATMove } from '$lib/config';
+	import type { ATCompany, ATMove, ATPosition } from '$lib/config';
 
 	export let companyData: ATCompany;
-	export let moveData: { keyHires: ATMove[]; keyDepartures: ATMove[]; general: ATMove[] };
+	export let moveData: {
+		keyHires: ATMove[];
+		keyDepartures: ATMove[];
+		general: ATMove[] | ATPosition[];
+	};
 </script>
 
-<div class="sticky top-0 z-10 h-32 w-full border-b bg-background">
+<div class="sticky top-0 z-10 h-32 w-full bg-background">
 	<div class="px-6 py-4">
 		<h3 class="text-md my-4 scroll-m-20 font-black tracking-tight">
 			AUM: <span class="ml-2 text-base font-normal">{companyData['AUM_Concatenate'] || 'N/A'}</span>
@@ -20,7 +24,7 @@
 	</div>
 </div>
 {#if moveData.keyHires.length > 0}
-	<div class="sticky top-32 w-full border-b bg-muted py-2 pl-6">
+	<div class="sticky top-32 w-full border-y bg-muted py-2 pl-6">
 		<h3 class="text-md my-4 scroll-m-20 font-black tracking-tight">Key Hires:</h3>
 	</div>
 	{#each moveData.keyHires as keyHire}
@@ -63,6 +67,13 @@
 					<MinusCircle class="h-6 w-6" />
 				</div>
 				<p class="text-sm">{@html paragraphify(move)}</p>
+			</div>
+		{:else if move.moveType === 'Departure TBD' && paragraphify(undefined, move) !== 'hidden'}
+			<div class="flex items-center px-6 py-3">
+				<div class="mr-4 h-full">
+					<MinusCircle class="h-6 w-6" />
+				</div>
+				<p class="text-sm">{@html paragraphify(undefined, move)}</p>
 			</div>
 		{:else}
 			<div class="hidden items-center py-3"></div>
