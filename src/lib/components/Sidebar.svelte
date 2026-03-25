@@ -11,7 +11,8 @@
 		Ban,
 		SquareMousePointer,
 		Search,
-		Palette
+		Palette,
+		Layers
 	} from 'lucide-svelte';
 	import { orgchartConfig } from '$lib/config';
 	import * as Tooltip from '$lib/components/ui/tooltip';
@@ -219,6 +220,11 @@
 					<DropdownMenu.Separator />
 					<DropdownMenu.RadioGroup bind:value={$orgchartConfig.colorBy}>
 						<DropdownMenu.RadioItem
+							value="none"
+							class={$orgchartConfig.colorBy === 'none' ? 'text-sky-500' : 'text-muted-foreground'}
+							>None</DropdownMenu.RadioItem
+						>
+						<DropdownMenu.RadioItem
 							value="level"
 							class={$orgchartConfig.colorBy === 'level' ? 'text-sky-500' : 'text-muted-foreground'}
 							>Level</DropdownMenu.RadioItem
@@ -241,6 +247,47 @@
 		</Tooltip.Trigger>
 		<Tooltip.Content side="left">
 			<p class="text-sm">Select which field is used to color each node</p>
+		</Tooltip.Content>
+	</Tooltip.Root>
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger asChild let:builder>
+					<Button
+						variant="ghost"
+						class="h-full max-h-20 w-full max-w-16 items-center"
+						builders={[builder]}
+					>
+						<div class="flex w-full flex-col items-center justify-center text-muted-foreground">
+							<Layers class="h-5 w-5" />
+							<p
+								class="mt-2 flex max-w-8 justify-center whitespace-break-spaces text-center text-xs"
+							>
+								Style
+							</p>
+						</div>
+					</Button>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content class="w-56" side="left">
+					<DropdownMenu.Label>Style of the orgchart</DropdownMenu.Label>
+					<DropdownMenu.Separator />
+					<DropdownMenu.RadioGroup bind:value={$orgchartConfig.style}>
+						<DropdownMenu.RadioItem
+							value="jensen"
+							class={$orgchartConfig.style === 'jensen' ? 'text-sky-500' : 'text-muted-foreground'}
+							>Jensen</DropdownMenu.RadioItem
+						>
+						<DropdownMenu.RadioItem
+							value="rounded"
+							class={$orgchartConfig.style === 'rounded' ? 'text-sky-500' : 'text-muted-foreground'}
+							>Rounded</DropdownMenu.RadioItem
+						>
+					</DropdownMenu.RadioGroup>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
+		</Tooltip.Trigger>
+		<Tooltip.Content side="left">
+			<p class="text-sm">Select the style of the orgchart</p>
 		</Tooltip.Content>
 	</Tooltip.Root>
 	<Tooltip.Root>

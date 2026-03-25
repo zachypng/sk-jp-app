@@ -12,7 +12,8 @@ export const orgchartConfig = writable({
 	searchOpen: false,
 	detail: 'location',
 	activeSelection: '',
-	colorBy: 'level'
+	colorBy: 'none',
+	style: 'jensen'
 });
 
 export interface InputConfig {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { mode } from 'mode-watcher';
 	import Orgchart from '$lib/components/Orgchart.svelte';
+	import OrgchartJensen from '$lib/components/OrgchartJensen.svelte';
 	import { orgchartConfig } from '$lib/config';
 	import InfoTab from '$lib/components/InfoTab.svelte';
 	import { fly } from 'svelte/transition';
@@ -16,31 +17,39 @@
 </svelte:head>
 
 {#key $mode}
-	{#key $orgchartConfig.showPhotos}
-		{#key $orgchartConfig.showBios}
-			{#key $orgchartConfig.allowEdits}
-				{#key $orgchartConfig.detail}
-					{#key $orgchartConfig.colorBy}
-						{#await data.positions then positions}
-							<div class="flex w-full max-w-[calc(100vw-9.45rem)] flex-row overflow-hidden">
-								<div
-									class="{$orgchartConfig.showInfo
-										? 'basis-4/5'
-										: 'basis-full'} noscrollbar -mt-6 w-full"
-								>
-									<Orgchart {positions} />
-								</div>
-								{#if $orgchartConfig.showInfo}
+	{#key $orgchartConfig.style}
+		{#key $orgchartConfig.showPhotos}
+			{#key $orgchartConfig.showBios}
+				{#key $orgchartConfig.allowEdits}
+					{#key $orgchartConfig.detail}
+						{#key $orgchartConfig.colorBy}
+							{#await data.positions then positions}
+								<div class="flex w-full max-w-[calc(100vw-9.45rem)] flex-row overflow-hidden">
 									<div
-										class="noscrollbar max-h-[calc(100vh-73px)] w-full basis-1/4 overflow-y-scroll border-l bg-background"
-										in:fly={{ x: '80%', duration: 600 }}
-										out:fly={{ x: '80%', duration: 200 }}
+										class="{$orgchartConfig.showInfo
+											? 'basis-4/5'
+											: 'basis-full'} noscrollbar -mt-6 w-full"
 									>
-										<InfoTab moveData={data.moves} companyData={data.company} />
+										{#if $orgchartConfig.style === 'jensen'}
+											<OrgchartJensen {positions} />
+										{:else if $orgchartConfig.style === 'rounded'}
+											<Orgchart {positions} />
+										{:else}
+											<Orgchart {positions} />
+										{/if}
 									</div>
-								{/if}
-							</div>
-						{/await}
+									{#if $orgchartConfig.showInfo}
+										<div
+											class="noscrollbar max-h-[calc(100vh-73px)] w-full basis-1/4 overflow-y-scroll border-l bg-background"
+											in:fly={{ x: '80%', duration: 600 }}
+											out:fly={{ x: '80%', duration: 200 }}
+										>
+											<InfoTab moveData={data.moves} companyData={data.company} />
+										</div>
+									{/if}
+								</div>
+							{/await}
+						{/key}
 					{/key}
 				{/key}
 			{/key}

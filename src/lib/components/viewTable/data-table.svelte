@@ -15,7 +15,7 @@
 	} from 'lucide-svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { fade } from 'svelte/transition';
-	import type { ATView } from '$lib/utils';
+	import type { ATView } from '$lib/config';
 
 	type Record = {
 		id: string;

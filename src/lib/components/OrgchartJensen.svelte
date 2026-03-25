@@ -137,7 +137,6 @@
 				shadow: '#64748b80',
 				tooltip: '#1f2937',
 				levels: [
-					'#033A55',
 					'#AC193D',
 					'#2672EC',
 					'#8C0095',
@@ -201,7 +200,9 @@
 
 		// Used to convert the node's tree level into a theme color
 		function findLevelColor(node: Node) {
-			if ($orgchartConfig.colorBy === 'ethnicity' && node.data.ethnicity) {
+			if ($orgchartConfig.colorBy === 'none') {
+				return;
+			} else if ($orgchartConfig.colorBy === 'ethnicity' && node.data.ethnicity) {
 				return ethnicities.indexOf(node.data.ethnicity);
 			} else if ($orgchartConfig.colorBy === 'department' && node.data.department) {
 				return departments.indexOf(node.data.department);
@@ -214,7 +215,7 @@
 
 		// define the Node template
 		myDiagram.nodeTemplate = new go.Node(go.Panel.Spot, {
-			isShadowed: true,
+			isShadowed: false,
 			shadowOffset: new go.Point(0, 2),
 			selectionObjectName: 'BODY',
 			// handle dragging a Node onto a Node to (maybe) change the reporting relationship
@@ -293,88 +294,104 @@
 					.bind('visible', 'logoURL', (logoURL) => !logoURL)
 					.add(
 						// define the node's outer shape
-						new go.Shape('RoundedRectangle', {
+						new go.Shape('Rectangle', {
 							name: 'SHAPE',
-							strokeWidth: 0,
+							strokeWidth: 1,
+							stroke: '#033A55',
 							portId: '',
 							spot1: go.Spot.TopLeft,
 							spot2: go.Spot.BottomRight
 						})
-							.bind('strokeWidth', 'isHighlighted', (h) => (h ? 4 : 0))
-							.theme('fill', 'background')
-							.theme('stroke', 'highlight'),
-						new go.Panel(go.Panel.Table, { margin: 0.5, defaultRowSeparatorStrokeWidth: 0.5 })
-							.theme('defaultRowSeparatorStroke', 'divider')
-							.add(
-								new go.Panel(go.Panel.Table, { padding: new go.Margin(18, 18, 18, 24) })
-									.addColumnDefinition(0, { width: 240 })
-									.add(
-										new go.Panel(go.Panel.Table, {
-											column: 0,
-											alignment: go.Spot.Left,
-											stretch: go.Stretch.Vertical,
-											defaultAlignment: go.Spot.Left
-										}).add(
-											new go.Panel(go.Panel.Horizontal, { row: 0 }).add(
-												new go.TextBlock({
-													editable: true,
-													minSize: new go.Size(10, 14),
-													maxSize: new go.Size(200, 42),
-													textAlign: 'left',
-													maxLines: 2
-												})
-													.bindTwoWay('text', 'name')
-													.theme('stroke', 'text')
-													.theme('font', 'name')
-											),
-											new go.TextBlock({
-												row: 1,
-												rowSpan: 2,
-												margin: new go.Margin(10, 0, 0, 0),
-												editable: false,
-												minSize: new go.Size(100, 55),
-												width: 200,
-												maxLines: 3,
-												overflow: go.TextOverflow.Ellipsis,
-												font: '1rem Inter, sans-serif'
-											})
-												.bind('text', 'title')
-												.theme('stroke', 'subtext')
-											// .theme('font', 'normal')
-										),
-										new go.Panel(go.Panel.Spot, { isClipping: true, column: 1 }).add(
-											new go.Shape('Circle', { desiredSize: new go.Size(70, 70), strokeWidth: 0 }),
-											new go.Picture({
-												name: 'PICTURE',
-												source: '',
-												desiredSize: new go.Size(70, 70),
-												visible: $orgchartConfig.showPhotos,
-												imageStretch: go.ImageStretch.UniformToFill
-											}).bind('source', 'photoURL')
-										)
-									),
-								new go.Panel(go.Panel.Table, {
-									row: 1,
-									stretch: go.Stretch.Horizontal,
-									defaultColumnSeparatorStrokeWidth: 0.5,
-									width: 240,
-									height: 40
+							.bindObject('strokeWidth', 'isHighlighted', (h) => (h ? 4 : 1))
+							.bindObject('stroke', 'isHighlighted', (h) => (h ? '#facc15' : '#033A55'))
+							.theme('fill', 'background'),
+						new go.Panel(go.Panel.Vertical, {
+							defaultAlignment: go.Spot.Center
+						}).add(
+							new go.Panel(go.Panel.Spot, {
+								stretch: go.Stretch.Horizontal,
+								height: 240, // 120
+								visible: $orgchartConfig.showPhotos
+							}).add(
+								new go.Shape('Rectangle', { strokeWidth: 0, stretch: go.Stretch.Fill }).theme(
+									'fill',
+									'dragOver'
+								),
+								new go.Shape({
+									geometryString:
+										'F1 M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2 M12 3a4 4 0 1 0 0 8 4 4 0 1 0 0-8z',
+									strokeWidth: 2,
+									fill: 'transparent',
+									width: 80,
+									height: 100, // 48
+									alignment: go.Spot.Center
 								})
-									.theme('defaultColumnSeparatorStroke', 'divider')
-									.add(
-										new go.TextBlock({
-											editable: true,
-											minSize: new go.Size(10, 12),
-											margin: new go.Margin(2, -1)
-										})
-											.bind('text', $orgchartConfig.detail)
-											.bind('visible', $orgchartConfig.detail, () =>
-												$orgchartConfig.detail ? true : false
-											)
-											.theme('stroke', 'subtext')
-											.theme('font', 'normal')
-									)
+									.bind('visible', 'photoURL', (url) => !url)
+									.theme('stroke', 'subtext'),
+								new go.Picture({
+									name: 'PICTURE',
+									source: '',
+									imageStretch: go.ImageStretch.UniformToFill,
+									stretch: go.Stretch.Fill
+								})
+									.bind('source', 'photoURL')
+									.bind('visible', 'photoURL', (url) => !!url)
 							),
+							new go.Panel(go.Panel.Spot, {
+								stretch: go.Stretch.Horizontal
+							}).add(
+								new go.Shape('Rectangle', {
+									fill: '#033A55',
+									strokeWidth: 0,
+									desiredSize: new go.Size(300, 60),
+									minSize: new go.Size(240, 48),
+									maxSize: new go.Size(300, 72)
+								}),
+								new go.TextBlock({
+									editable: true,
+									minSize: new go.Size(10, 14),
+									maxSize: new go.Size(240, 48),
+									textAlign: 'center',
+									maxLines: 3,
+									font: '700 1.2rem Inter, sans-serif',
+									stroke: 'white',
+									margin: new go.Margin(4, 28, 4, 28)
+								}).bindTwoWay('text', 'name')
+							),
+							new go.TextBlock({
+								margin: new go.Margin(12, 28, 0, 28),
+								editable: false,
+								minSize: new go.Size(100, 14),
+								width: 240,
+								textAlign: 'center',
+								maxLines: 4,
+								overflow: go.TextOverflow.Ellipsis,
+								font: '1.2rem Inter, sans-serif'
+							})
+								.bind('text', 'title')
+								.theme('stroke', 'subtext'),
+							new go.Panel(go.Panel.Auto, { margin: new go.Margin(8, 28, 16, 28) })
+								.bind('visible', $orgchartConfig.detail, () =>
+									$orgchartConfig.detail ? true : false
+								)
+								.add(
+									new go.Shape('RoundedRectangle', {
+										strokeWidth: 1,
+										parameter1: 4,
+										fill: 'transparent',
+										stroke: 'transparent'
+									}),
+									// .theme('fill', 'badge')
+									// .theme('stroke', 'subtext'),
+									new go.TextBlock({
+										editable: true,
+										margin: new go.Margin(12, 0, 0, 0),
+										font: '500 0.95rem Inter, sans-serif'
+									})
+										.bind('text', $orgchartConfig.detail)
+										.theme('stroke', 'subtext')
+								)
+						),
 						$(
 							go.Shape,
 							'Star',
@@ -383,23 +400,25 @@
 								height: 24,
 								strokeWidth: 0.8,
 								alignment: go.Spot.TopRight, // Position in the top-right of the Auto panel
-								margin: 4, // Spacing from the edge
-								visible: true, // Default to invisible
+								margin: new go.Margin(12, 4, 12, 4), // Spacing from the edge
+								visible: true, // Default to visible
 								scale: 1.2,
-								stroke: 'darkgoldenrod'
+								stroke: 'white',
+								fill: 'white'
 							},
 							// Binding for visibility
 							new go.Binding('visible', 'rainmaker', function (rainmaker) {
 								return rainmaker === true;
 							})
-						).theme('fill', 'highlight')
-					), // end Auto Panel
-				new go.Shape('RoundedLeftRectangle', {
+						).theme('stroke', 'subtext')
+					),
+				new go.Shape('Rectangle', {
 					alignment: go.Spot.Left,
 					alignmentFocus: go.Spot.Left,
 					stretch: go.Stretch.Vertical,
 					width: 6,
-					strokeWidth: 0
+					strokeWidth: 0,
+					fill: 'transparent'
 				})
 					.bind('visible', 'logoURL', (logoURL) => !logoURL)
 					.themeObject('fill', '', 'levels', findLevelColor),
@@ -429,6 +448,7 @@
 					visible: false,
 					maxSize: new go.Size(350, 147),
 					imageStretch: go.ImageStretch.Uniform,
+					alignment: go.Spot.BottomCenter,
 					background: 'white'
 				})
 					.bind('visible', 'logoURL', (logoURL) => !!logoURL && !logoURL.endsWith('.svg'))
@@ -526,7 +546,6 @@
 		// called by button
 		if (!input) return;
 		myDiagram.focus();
-
 		myDiagram.startTransaction('highlight search');
 
 		if (input !== '' && input !== 'Search nodes...') {
@@ -569,6 +588,8 @@
 	}
 
 	function resetZoom() {
+		myDiagram.clearHighlighteds();
+		myDiagram.scrollToRect(myDiagram.documentBounds);
 		myDiagram.commandHandler.resetZoom(0.6);
 	}
 </script>
