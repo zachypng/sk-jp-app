@@ -154,7 +154,7 @@
 			},
 			fonts: {
 				name: '700 1.2rem Inter, sans-serif',
-				normal: '0.875rem Inter, sans-serif',
+				normal: '1.2rem Inter, sans-serif',
 				badge: '500 0.75rem Inter, sans-serif',
 				link: '600 0.875rem Inter, sans-serif'
 			}
@@ -178,7 +178,7 @@
 			},
 			fonts: {
 				name: '700 1.2rem Inter, sans-serif',
-				normal: '0.875rem Inter, sans-serif',
+				normal: '1.1rem Inter, sans-serif',
 				badge: '500 0.75rem Inter, sans-serif',
 				link: '600 0.875rem Inter, sans-serif'
 			}
@@ -266,23 +266,25 @@
 			toolTip: $orgchartConfig.showBios
 				? new go.Adornment('Auto', { name: 'ToolTip' })
 						.add(
-							new go.Shape('RoundedRectangle', {})
+							new go.Shape('RoundedRectangle', {
+								strokeWidth: 1,
+								parameter1: 8
+							})
 								.theme('fill', 'background')
 								.theme('stroke', 'border')
 						)
 						.add(
 							new go.TextBlock({
-								margin: 8,
+								margin: new go.Margin(16, 16, 16, 16),
 								wrap: go.Wrap.Fit,
-								maxLines: 24,
-								visible: $orgchartConfig.showBios,
+								maxLines: 30,
 								isMultiline: true
 							})
 								.bind('text', 'biography')
 								.bind('maxSize', 'biography', (biography) =>
-									!!biography ? new go.Size(480, 240) : null
+									!!biography ? new go.Size(600, 400) : null
 								)
-								.bind('visible', 'biography', (biography) => (!!biography ? true : false))
+								.bind('visible', 'biography', (biography) => !!biography)
 								.theme('font', 'normal')
 								.theme('stroke', 'text')
 						)
@@ -430,16 +432,13 @@
 						_treeCollapsedFigure: 'LineDown',
 						name: 'BUTTONX',
 						alignment: go.Spot.Bottom,
-						opacity: 0 // initially not visible
+						opacity: 0
 					},
-					// button is visible either when node is selected or on mouse-over
 					new go.Binding('opacity', 'isSelected', (s) => (s ? 1 : 0)).ofObject()
 				)
 			)
 			.theme('shadowColor', 'shadow')
-			// for sorting, have the Node.text be the data.name
 			.bind('text', 'region')
-			// bind the Part.layerName to control the Node's layer depending on whether it isSelected
 			.bindObject('layerName', 'isSelected', (sel) => (sel ? 'Foreground' : ''))
 			.bindTwoWay('isTreeExpanded')
 			.add(
