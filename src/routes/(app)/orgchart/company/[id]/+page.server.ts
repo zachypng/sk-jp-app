@@ -49,6 +49,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	const company = await companyTable.findOneById(params.id);
 	const selectedCompany = company._rawJson;
 
+	const parentCompanyID = selectedCompany.fields['Parent_Company']?.[0];
+	const parentCompany = parentCompanyID ? (await companyTable.findOneById(parentCompanyID))._rawJson : undefined;
+
 	const positionTable = EasyAirtableTable.fromConfig(tableList.Position);
 	const positionRecords = await positionTable.findAll({
 		view: 'viw3yw95f2rQUhQ6M', // Distribution View (All)
@@ -155,11 +158,11 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					: 'Unknown',
 				prevTenure:
 					move.fields['End Date (from Previous Position)'] &&
-					move.fields['Start Date (from Previous Position)']
+						move.fields['Start Date (from Previous Position)']
 						? getTenure(
-								move.fields['Start Date (from Previous Position)'][0],
-								move.fields['End Date (from Previous Position)'][0]
-							)
+							move.fields['Start Date (from Previous Position)'][0],
+							move.fields['End Date (from Previous Position)'][0]
+						)
 						: 'an unknown amount of time',
 				endDate: move.fields['End Date (from Previous Position)']
 					? getMonthYear(move.fields['End Date (from Previous Position)'][0])
@@ -251,6 +254,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		user: locals.user,
 		title: (await selectedCompany.fields.Company) + ' | Distribution View' || title,
 		company: await selectedCompany.fields,
+		parentCompany: parentCompany?.fields['Parent Company'] || undefined,
 		positions: positions,
 		moves: {
 			keyHires:

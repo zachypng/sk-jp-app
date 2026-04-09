@@ -9,9 +9,10 @@
 		keyDepartures: ATMove[];
 		general: ATMove[] | ATPosition[];
 	};
+	export let parentCompany: string | undefined = undefined;
 </script>
 
-<div class="sticky top-0 z-10 h-32 w-full bg-background">
+<div class="sticky top-0 z-10 h-auto w-full bg-background">
 	<div class="px-6 py-4">
 		<h3 class="text-md my-4 scroll-m-20 font-black tracking-tight">
 			AUM: <span class="ml-2 text-base font-normal">{companyData['AUM_Concatenate'] || 'N/A'}</span>
@@ -21,10 +22,18 @@
 				Firm Type: <span class="ml-2 text-base font-normal">{companyData.firmType}</span>
 			{/if}
 		</h3>
+		<h3 class="text-md my-4 scroll-m-20 font-black tracking-tight">
+			{#if parentCompany != undefined}
+				Parent Company: <span class="ml-2 text-base font-normal">{parentCompany}</span>
+			{/if}
+		</h3>
 	</div>
 </div>
 {#if moveData.keyHires.length > 0}
-	<div class="sticky top-32 w-full border-y bg-muted py-2 pl-6">
+	<div
+		class={'sticky w-full border-y bg-muted py-2 pl-6' +
+			(parentCompany ? ' top-[168px]' : ' top-32')}
+	>
 		<h3 class="text-md my-4 scroll-m-20 font-black tracking-tight">Key Hires:</h3>
 	</div>
 	{#each moveData.keyHires as keyHire}
@@ -37,7 +46,10 @@
 	{/each}
 {/if}
 {#if moveData.keyDepartures.length > 0}
-	<div class="sticky top-32 w-full border-y bg-muted py-2 pl-6">
+	<div
+		class={'sticky w-full border-y bg-muted py-2 pl-6' +
+			(parentCompany ? ' top-[168px]' : ' top-32')}
+	>
 		<h3 class="text-md my-4 scroll-m-20 font-black tracking-tight">Key Departures:</h3>
 	</div>
 	{#each moveData.keyDepartures as keyDeparture}
@@ -50,7 +62,10 @@
 	{/each}
 {/if}
 {#if moveData.general.length > 0}
-	<div class="sticky top-32 w-full border-y bg-muted py-2 pl-6">
+	<div
+		class={'sticky w-full border-y bg-muted py-2 pl-6' +
+			(parentCompany ? ' top-[168px]' : ' top-32')}
+	>
 		<h3 class="text-md my-4 scroll-m-20 font-black tracking-tight">Hires / Departures:</h3>
 	</div>
 	{#each moveData.general as move}

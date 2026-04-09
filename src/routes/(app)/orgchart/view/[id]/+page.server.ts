@@ -132,6 +132,9 @@ export const load: PageServerLoad = async ({ params, locals, fetch }) => {
 	const company = await companyTable.findOneById(companyID);
 	const selectedCompany = company._rawJson;
 
+	const parentCompanyID = selectedCompany.fields['Parent_Company']?.[0];
+	const parentCompany = parentCompanyID ? (await companyTable.findOneById(parentCompanyID))._rawJson : undefined;
+
 	const movesTable = EasyAirtableTable.fromConfig(tableList.Moves);
 	const movesRecords = await movesTable.findAll({
 		filterByFormula: `AND(OR({Company (from Previous Position)}='${selectedCompany.fields.Company}', {Company (from New Position)}='${selectedCompany.fields.Company}'), {fldWcDuquxc0jf9vS}='External', OR({newLabelTag}='Distribution', {newLabelTag}='C-Suite', AND(OR({prevLabelTag}='Distribution', {prevLabelTag}='C-Suite'), {Company (from Previous Position)}='${selectedCompany.fields.Company}')))`, // Move Type = 'External'
@@ -167,11 +170,11 @@ export const load: PageServerLoad = async ({ params, locals, fetch }) => {
 					: 'Unknown',
 				prevTenure:
 					move.fields['End Date (from Previous Position)'] &&
-					move.fields['Start Date (from Previous Position)']
+						move.fields['Start Date (from Previous Position)']
 						? getTenure(
-								move.fields['Start Date (from Previous Position)'][0],
-								move.fields['End Date (from Previous Position)'][0]
-							)
+							move.fields['Start Date (from Previous Position)'][0],
+							move.fields['End Date (from Previous Position)'][0]
+						)
 						: 'an unknown amount of time',
 				prevEndDateRaw: move.fields['End Date (from Previous Position)']
 					? move.fields['End Date (from Previous Position)'][0]
@@ -260,6 +263,7 @@ export const load: PageServerLoad = async ({ params, locals, fetch }) => {
 		user: locals.user,
 		title: (await selectedView) || title,
 		company: selectedCompany.fields,
+		parentCompany: parentCompany?.fields['Parent Company'] || undefined,
 		positions: positions,
 		moves: {
 			keyHires:

@@ -44,7 +44,11 @@
 											in:fly={{ x: '80%', duration: 600 }}
 											out:fly={{ x: '80%', duration: 200 }}
 										>
-											<InfoTab moveData={data.moves} companyData={data.company} />
+											<InfoTab
+												moveData={data.moves}
+												companyData={data.company}
+												parentCompany={data.parentCompany}
+											/>
 										</div>
 									{/if}
 								</div>
