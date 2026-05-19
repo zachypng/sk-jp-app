@@ -18,7 +18,7 @@
 	import { enhance } from '$app/forms';
 	import { cn, slugify } from '$lib/utils';
 	import { orgchartConfig } from '$lib/config';
-	import { Node } from 'gojs';
+	import { Node, Diagram } from 'gojs';
 
 	type Position = {
 		key: string | number;
@@ -45,6 +45,8 @@
 	$: nodeCount = 0;
 
 	export let positions: Position[];
+
+	const rootId = positions[0].key;
 
 	let departments = [...new Set(positions.map((p) => p.department))];
 	let ethnicities = [...new Set(positions.map((p) => p.ethnicity))];
@@ -96,6 +98,7 @@
 					sorting: go.TreeSorting.Ascending,
 					comparer: (a: go.TreeVertex, b: go.TreeVertex) => {
 						return (
+							(a.node?.data.floaterSort ?? '0').localeCompare(b.node?.data.floaterSort ?? '0') ||
 							a.node?.data.location?.localeCompare(b.node?.data.location) ||
 							a.node?.data.department?.localeCompare(b.node?.data.department) ||
 							a.node?.data.name?.localeCompare(b.node?.data.name)
@@ -194,8 +197,20 @@
 		}
 
 		// gets the total number of nodes
-		function getNodeCount() {
+		function getNodeCountOld() {
 			nodeCount = myDiagram.nodes.count - 1;
+		}
+
+		function getNodeCount(diagram: Diagram, countVisible = true) {
+			let count = 0;
+			if (diagram && diagram.nodes) {
+				diagram.nodes.each((node: Node) => {
+					if (!countVisible || node.visible) {
+						count++;
+					}
+				});
+			}
+			nodeCount = count - 1;
 		}
 
 		// Used to convert the node's tree level into a theme color
@@ -466,11 +481,21 @@
 		myDiagram.model = new go.TreeModel([...positions]);
 
 		// remove nodes with no parent or children (hides stragglers)
-		myDiagram.nodes.each(function (node) {
-			if (node.isTreeLeaf && node.isTreeRoot) {
-				myDiagram.remove(node);
+		let targetNodes: go.Node[] = [];
+		myDiagram.nodes.each((node) => {
+			const rootNode = node.findTreeRoot();
+			if (rootNode !== null && rootNode.data.key !== rootId) {
+				targetNodes.push(node);
 			}
 		});
+		myDiagram.model.commit((m) => {
+			targetNodes.forEach((node) => {
+				m.setDataProperty(node.data, 'floaterSort', '-1');
+				if (!$orgchartConfig.allowEdits && node !== null) {
+					node.visible = false;
+				}
+			});
+		}, 'tag floaters for sorting');
 
 		myDiagram.toolManager.draggingTool.doActivate = function () {
 			go.DraggingTool.prototype.doActivate.call(this);
@@ -490,7 +515,8 @@
 			myDiagram.centerRect(node.actualBounds);
 		});
 
-		getNodeCount();
+		// getNodeCountOld()
+		getNodeCount(myDiagram, true);
 
 		function handleKeydown(e: KeyboardEvent) {
 			if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
