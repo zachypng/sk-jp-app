@@ -38,6 +38,7 @@
 	let form: HTMLFormElement;
 	let value = '';
 	let open = true;
+	let currentFloaters: { key: string; name: string; title: string }[] = [];
 
 	$: searchString = positions.find((f) => f.name === value)?.name ?? 'Search nodes...';
 	$: positionID = '';
@@ -111,7 +112,7 @@
 				'themeManager.changesDivBackground': true,
 				'themeManager.currentTheme': $mode,
 				allowMove: $orgchartConfig.allowEdits,
-				scrollMargin: new go.Margin(100, 100, 100, 100),
+				scrollMargin: new go.Margin(400, 100, 400, 100),
 				'toolManager.mouseWheelBehavior': go.WheelMode.Zoom,
 				'toolManager.hoverDelay': $orgchartConfig.showBios ? 90 : Infinity,
 				'toolManager.toolTipDuration': $orgchartConfig.showBios ? Infinity : 0,
@@ -121,7 +122,9 @@
 				'draggingTool.dragsTree': true,
 				'dragSelectingTool.isEnabled': false,
 				LayoutCompleted: (e) => {
+					const root = e.diagram.findNodeForKey(rootId);
 					e.diagram.moveParts(e.diagram.nodes, new go.Point(0, 0), false);
+					e.diagram.centerRect(root?.actualBounds || new go.Rect(0, 0, 0, 0));
 				}
 			}
 		);
@@ -496,6 +499,11 @@
 				}
 			});
 		}, 'tag floaters for sorting');
+		currentFloaters = targetNodes.map((node) => ({
+			key: node.data.key,
+			name: node.data.name,
+			title: node.data.title
+		}));
 
 		myDiagram.toolManager.draggingTool.doActivate = function () {
 			go.DraggingTool.prototype.doActivate.call(this);
@@ -590,7 +598,9 @@
 			if (!results) return;
 			if (results.count > 0) {
 				myDiagram.scale = 1.5;
-				myDiagram.centerRect((results.first() as go.Node).actualBounds);
+				setTimeout(() => {
+					myDiagram.centerRect((results.first() as go.Node).actualBounds);
+				}, 50);
 			}
 		} else {
 			// empty string only clears highlighteds collection
@@ -689,8 +699,36 @@
 				>
 					<Command.Input placeholder="Search nodes..." />
 					<Command.Empty>Node not found.</Command.Empty>
+					{#if currentFloaters.length > 0}
+						<Command.Group class="max-h-64 overflow-scroll" heading="Current Floaters">
+							{#each currentFloaters as node, i}
+								<Command.Item
+									value={node.name + '?' + node.title}
+									disabled={!$orgchartConfig.allowEdits}
+									onSelect={() => {
+										if (!$orgchartConfig.allowEdits) return;
+										searchDiagram(node.name);
+										$orgchartConfig.searchOpen = false;
+									}}
+								>
+									<span class={cn('mr-2 w-2 font-mono text-xs text-muted-foreground')}
+										>{i + 1}.</span
+									>
+									<Check class={cn('mr-2 h-4 w-4', value !== node.name && 'text-transparent')} />
+									{node.name}
+									<span
+										class="ml-2 line-clamp-1 flex-1 text-ellipsis text-end text-xxs text-muted-foreground"
+										>{node.title}</span
+									>
+								</Command.Item>
+							{/each}
+						</Command.Group>
+					{/if}
 					<Command.Group class="max-h-64 overflow-scroll" heading="Names">
-						{#each [...positions].slice(1).sort((a, b) => a.name.localeCompare(b.name)) as position}
+						{#each [...positions]
+							.filter((item) => !currentFloaters.some((excludeItem) => excludeItem.name === item.name))
+							.slice(1)
+							.sort((a, b) => a.name.localeCompare(b.name)) as position, i}
 							<Command.Item
 								value={position.name + '?' + position.title}
 								onSelect={(currentValue) => {
@@ -700,6 +738,7 @@
 									$orgchartConfig.searchOpen = false;
 								}}
 							>
+								<span class={cn('mr-2 w-2 font-mono text-xs text-muted-foreground')}>{i + 1}.</span>
 								<Check class={cn('mr-2 h-4 w-4', value !== position.name && 'text-transparent')} />
 								{position.name}
 								<span
