@@ -122,9 +122,7 @@
 				'draggingTool.dragsTree': true,
 				'dragSelectingTool.isEnabled': false,
 				LayoutCompleted: (e) => {
-					const root = e.diagram.findNodeForKey(rootId);
 					e.diagram.moveParts(e.diagram.nodes, new go.Point(0, 0), false);
-					e.diagram.centerRect(root?.actualBounds || new go.Rect(0, 0, 0, 0));
 				}
 			}
 		);
@@ -517,12 +515,14 @@
 
 		myDiagram.addDiagramListener('InitialLayoutCompleted', (e) => {
 			// find the corresponding Node
+			const root = e.diagram.findNodeForKey(rootId);
 			const node = myDiagram.findNodeForData(positions[0]);
 			// and center it and select it
-			if (!node) return;
-			myDiagram.centerRect(node.actualBounds);
+			if (!root) return;
+			myDiagram.centerRect(root.actualBounds);
 		});
 
+		myDiagram.centerRect(myDiagram.findNodeForKey(rootId)?.actualBounds || new go.Rect(0, 0, 0, 0));
 		// getNodeCountOld()
 		getNodeCount(myDiagram, true);
 
