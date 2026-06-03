@@ -374,7 +374,20 @@
 									font: '700 1.2rem Inter, sans-serif',
 									stroke: 'white',
 									margin: new go.Margin(4, 28, 4, 28)
-								}).bindTwoWay('text', 'name')
+								}).bindTwoWay('text', 'name'),
+								$(go.Shape, 'Star', {
+									width: 28,
+									height: 24,
+									strokeWidth: 0.8,
+									alignment: go.Spot.MiddleRight,
+									alignmentFocus: go.Spot.MiddleRight,
+									margin: new go.Margin(0, 0, 0, 0),
+									visible: false,
+									scale: 1.2,
+									stroke: 'goldenrod',
+									fill: 'gold'
+								}).bind('visible', 'rainmaker', (rainmaker) => !!rainmaker)
+								// .theme('stroke', 'subtext')
 							),
 							new go.TextBlock({
 								margin: new go.Margin(12, 28, 0, 28),
@@ -409,26 +422,7 @@
 										.bind('text', $orgchartConfig.detail)
 										.theme('stroke', 'subtext')
 								)
-						),
-						$(
-							go.Shape,
-							'Star',
-							{
-								width: 24,
-								height: 24,
-								strokeWidth: 0.8,
-								alignment: go.Spot.TopRight, // Position in the top-right of the Auto panel
-								margin: new go.Margin(12, 4, 12, 4), // Spacing from the edge
-								visible: true, // Default to visible
-								scale: 1.2,
-								stroke: 'white',
-								fill: 'white'
-							},
-							// Binding for visibility
-							new go.Binding('visible', 'rainmaker', function (rainmaker) {
-								return rainmaker === true;
-							})
-						).theme('stroke', 'subtext')
+						)
 					),
 				new go.Shape('Rectangle', {
 					alignment: go.Spot.Left,
