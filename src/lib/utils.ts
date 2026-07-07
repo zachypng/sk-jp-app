@@ -86,7 +86,8 @@ export function paragraphify(move?: ATMove, position?: ATPosition) {
 		} for ${move.prevTenure}.`;
 	} else if (
 		move?.moveType === 'Departure' &&
-		(move.newCompany !== 'LTI' || move.newConcatTitle !== 'LTI')
+		move?.newCompany !== 'LTI' &&
+		move?.newConcatTitle !== 'LTI'
 	) {
 		return `<span class="font-bold">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span class="underline">${move.prevCompany}</span> in ${
 			move.prevEndDate
@@ -95,7 +96,7 @@ export function paragraphify(move?: ATMove, position?: ATPosition) {
 		}.`;
 	} else if (
 		move?.moveType === 'Departure' &&
-		(move.newCompany === 'LTI' || move.newConcatTitle === 'LTI')
+		(move?.newCompany === 'LTI' || move?.newConcatTitle === 'LTI')
 	) {
 		return `<span class="font-bold">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span class="underline">${move.prevCompany}</span> in ${
 			move.prevEndDate
