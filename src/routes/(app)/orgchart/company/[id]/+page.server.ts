@@ -167,6 +167,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				endDate: move.fields['End Date (from Previous Position)']
 					? getMonthYear(move.fields['End Date (from Previous Position)'][0])
 					: 'N/A',
+				prevEndDate: move.fields['End Date (from Previous Position)']
+					? getMonthYear(move.fields['End Date (from Previous Position)'][0])
+					: 'N/A',
 				prevEndDateRaw: move.fields['End Date (from Previous Position)']
 					? move.fields['End Date (from Previous Position)'][0]
 					: 'N/A',
