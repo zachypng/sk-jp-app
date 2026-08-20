@@ -77,9 +77,9 @@ export function generateFormURL(form: keyof InputConfig, user: User) {
 export function paragraphify(move?: ATMove, position?: ATPosition) {
 	if (!move && !position) return 'hidden';
 	if (move?.moveType === 'Hire') {
-		return `<span class="font-bold">${move.personName}</span> joined <span class="underline">${move.newCompany}</span> in ${move.newStartDate} as ${
+		return `<span style="font-weight: 700;">${move.personName}</span> joined <span style="text-decoration: underline;">${move.newCompany}</span> in ${move.newStartDate} as ${
 			move.newConcatTitle
-		}. ${move.pronoun} joined from <span class="underline">${
+		}. ${move.pronoun} joined from <span style="text-decoration: underline;">${
 			move.prevCompany
 		}</span> where ${move.pronoun?.toLowerCase()} worked as ${
 			move.isKeyMove ? move.prevConcatTitle : move.prevCorporateTitle
@@ -89,20 +89,20 @@ export function paragraphify(move?: ATMove, position?: ATPosition) {
 		move?.newCompany !== 'LTI' &&
 		move?.newConcatTitle !== 'LTI'
 	) {
-		return `<span class="font-bold">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span class="underline">${move.prevCompany}</span> in ${
+		return `<span style="font-weight: 700;">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span style="text-decoration: underline;">${move.prevCompany}</span> in ${
 			move.prevEndDate
-		}. ${move.pronoun} joins <span class="underline">${move.newCompany}</span> as ${
+		}. ${move.pronoun} joins <span style="text-decoration: underline;">${move.newCompany}</span> as ${
 			move.isKeyMove ? move.newConcatTitle : move.newCorporateTitle
 		}.`;
 	} else if (
 		move?.moveType === 'Departure' &&
 		(move?.newCompany === 'LTI' || move?.newConcatTitle === 'LTI')
 	) {
-		return `<span class="font-bold">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span class="underline">${move.prevCompany}</span> in ${
+		return `<span style="font-weight: 700;">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span style="text-decoration: underline;">${move.prevCompany}</span> in ${
 			move.prevEndDate
 		}. ${move.pronoun} left the industry.`;
 	} else if (position?.moveType === 'Departure TBD') {
-		return `<span class="font-bold">${position.personName}</span> departed from <span class="underline">${position.company}</span> in ${position.endDate}.`;
+		return `<span style="font-weight: 700;">${position.personName}</span> departed from <span style="text-decoration: underline;">${position.company}</span> in ${position.endDate}.`;
 	} else {
 		return 'hidden';
 	}
