@@ -87,6 +87,7 @@ export function paragraphify(move?: ATMove, position?: ATPosition) {
 	} else if (
 		move?.moveType === 'Departure' &&
 		move?.newCompany !== 'LTI' &&
+		move?.newCompany !== 'TBD' &&
 		move?.newConcatTitle !== 'LTI'
 	) {
 		return `<span style="font-weight: 700;">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span style="text-decoration: underline;">${move.prevCompany}</span> in ${
@@ -101,6 +102,13 @@ export function paragraphify(move?: ATMove, position?: ATPosition) {
 		return `<span style="font-weight: 700;">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span style="text-decoration: underline;">${move.prevCompany}</span> in ${
 			move.prevEndDate
 		}. ${move.pronoun} left the industry.`;
+	} else if (
+		move?.moveType === 'Departure' &&
+		(move?.newCompany === 'TBD' || move?.newConcatTitle === 'TBD')
+	) {
+		return `<span style="font-weight: 700;">${move.personName}</span>, ${move.prevConcatTitle}, departed from <span style="text-decoration: underline;">${move.prevCompany}</span> in ${
+			move.prevEndDate
+		}.`;
 	} else if (position?.moveType === 'Departure TBD') {
 		return `<span style="font-weight: 700;">${position.personName}</span> departed from <span style="text-decoration: underline;">${position.company}</span> in ${position.endDate}.`;
 	} else {
