@@ -28,6 +28,11 @@ const airtableConfig = {
 		apiKey: AIRTABLE_PAT,
 		baseId: 'app6rqTtoNCCajSS1',
 		tableId: 'tblSqF45aGlvVCHU6'
+	},
+	companies: {
+		apiKey: AIRTABLE_PAT,
+		baseId: 'app6rqTtoNCCajSS1',
+		tableId: 'tblqTddKRbCwD0hhB'
 	}
 };
 
@@ -60,6 +65,15 @@ export const load: PageServerLoad = async ({ locals }) => {
 			records.map((record) => record._rawJson).flatMap((r) => r.fields['Company Type'])
 		);
 
+	const companies = EasyAirtableTable.fromConfig(airtableConfig.companies)
+		.findAll({
+			view: 'All Mapped Firms (Y)',
+			fields: ['Company']
+		})
+		.then((records) =>
+			records.map((record) => record._rawJson).flatMap((r) => r.fields['Company'])
+		);
+
 	const departments = EasyAirtableTable.fromConfig(airtableConfig.departments)
 		.findAll({
 			view: 'usedDepartments',
@@ -86,7 +100,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 			individualMoveTypes,
 			firmTypes,
 			departments,
-			ethnicities
+			ethnicities,
+			companies
 		}
 	};
 };

@@ -35,6 +35,7 @@ export interface InputConfig {
 	position: {
 		url: string;
 		fields: {
+			Company?: string;
 			Department?: string;
 			'Write-In Title'?: string;
 			Location?: string;

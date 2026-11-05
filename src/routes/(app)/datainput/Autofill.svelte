@@ -257,6 +257,40 @@
 							class="mt-0 w-full max-w-md flex-col gap-y-2 rounded-b-md rounded-t-none border p-4"
 						>
 							<div class="my-2">
+								<Label class="mt-4 text-lg" for="department">Company</Label>
+								<p class="my-1 text-sm text-muted-foreground">Select a default company</p>
+								<Select.Root
+									onSelectedChange={(v) => {
+										if ($inputConfig.position && $inputConfig.position.fields) {
+											if (v && v.value) {
+												$inputConfig.position.fields.Company = v.value.toString();
+											} else {
+												$inputConfig.position.fields.Company = undefined;
+											}
+										}
+									}}
+									selected={$inputConfig.position.fields?.Company
+										? { value: $inputConfig.position.fields?.Company }
+										: undefined}
+								>
+									<Select.Trigger class="w-full max-w-md">
+										<Select.Value
+											placeholder={$inputConfig.position.fields?.Company ??
+												'Select a default company...'}
+										/>
+									</Select.Trigger>
+									<Select.Content class="max-h-64 overflow-y-scroll">
+										{#await streamed.companies}
+											<Loader2 class="h-6 w-6 animate-spin" />
+										{:then companies}
+											{#each ['', ...companies] as company}
+												<Select.Item value={company}>{company ? company : 'None'}</Select.Item>
+											{/each}
+										{/await}
+									</Select.Content>
+								</Select.Root>
+							</div>
+							<div class="my-2">
 								<Label class="mt-4 text-lg" for="department">Department</Label>
 								<p class="my-1 text-sm text-muted-foreground">Select a default department</p>
 								<Select.Root
